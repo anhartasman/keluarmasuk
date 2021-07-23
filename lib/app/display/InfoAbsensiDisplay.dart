@@ -13,7 +13,13 @@ class InfoAbsensiDisplay {
         .format(DateTime.fromMillisecondsSinceEpoch(theAbsensi.absenIn));
     labelAbsenOut = DateFormat(formatJamTanggal, "id_ID")
         .format(DateTime.fromMillisecondsSinceEpoch(theAbsensi.absenOut));
+    labelJamAbsenIn = DateFormat("HH:mm", "id_ID")
+        .format(DateTime.fromMillisecondsSinceEpoch(theAbsensi.absenIn));
+    labelJamAbsenOut = DateFormat("HH:mm", "id_ID")
+        .format(DateTime.fromMillisecondsSinceEpoch(theAbsensi.absenOut));
   }
   String labelAbsenIn = "";
   String labelAbsenOut = "";
+  String labelJamAbsenIn = "";
+  String labelJamAbsenOut = "";
 }

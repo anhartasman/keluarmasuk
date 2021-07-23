@@ -14,6 +14,7 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:get/get.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
+import 'package:keluarmasuk/app/display/InfoAbsensiDisplay.dart';
 import 'package:keluarmasuk/app/pages/form_absensi/form_absensi_view.dart';
 import 'package:keluarmasuk/app/pages/form_cari_absen/form_cari_absen_view.dart';
 import 'package:keluarmasuk/app/pages/home_user/home_user_view.dart';
@@ -21,6 +22,7 @@ import 'package:keluarmasuk/app/utils/Warna.dart';
 import 'package:keluarmasuk/app/widgets/RPSCustomPainter.dart';
 import 'package:keluarmasuk/data/repositories/DataAbsensiUserRepository.dart';
 import 'package:keluarmasuk/data/repositories/DataUserRepository.dart';
+import 'package:keluarmasuk/domain/entities/AbsensiUser.dart';
 import 'home_user_controller.dart';
 import 'package:after_layout/after_layout.dart';
 //import 'package:openpgp/openpgp.dart';
@@ -65,7 +67,11 @@ class home_user_viewView extends ViewState<home_user_view, home_user_controller>
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 15.0, bottom: 20, top: 50),
+                          left: 15.0,
+                          bottom: 20,
+                          top: 50,
+                          right: 15.0,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -134,44 +140,40 @@ class home_user_viewView extends ViewState<home_user_view, home_user_controller>
                                     ),
                                   ),
                                   Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 15.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Warna.warnaHijau,
-                                          shape: BoxShape.rectangle,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(25.0)),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Warna.warnaHijau,
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(25.0)),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 20.0,
+                                          vertical: 20,
                                         ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 20.0,
-                                            vertical: 20,
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Text(
-                                                "Data Absen bulan ini",
-                                                style: TextStyle(
-                                                  fontSize: 14.0,
-                                                  fontFamily: "Popins",
-                                                  color: Colors.white,
-                                                ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              "Data Absen bulan ini",
+                                              style: TextStyle(
+                                                fontSize: 14.0,
+                                                fontFamily: "Popins",
+                                                color: Colors.white,
                                               ),
-                                              Text(
-                                                "${controller.absen_month_list.length}",
-                                                style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  fontFamily: "Popins",
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                            ),
+                                            Text(
+                                              "${controller.absen_month_list.length}",
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                fontFamily: "Popins",
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -235,6 +237,54 @@ class home_user_viewView extends ViewState<home_user_view, home_user_controller>
                                 ),
                               ),
                             ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 20.0, bottom: 10),
+                              child: Text(
+                                "Hari ini",
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontFamily: "Popins",
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Column(
+                              children: List.generate(
+                                controller.absen_day_list.length,
+                                (posisiAbsen) {
+                                  return _rowAbsensi(
+                                      theAbsensiDisplay: InfoAbsensiDisplay(
+                                          controller
+                                              .absen_day_list[posisiAbsen]));
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 20.0, bottom: 10),
+                              child: Text(
+                                "Bulan ini",
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontFamily: "Popins",
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Column(
+                              children: List.generate(
+                                controller.absen_month_list.length,
+                                (posisiAbsen) {
+                                  return _rowAbsensi(
+                                      theAbsensiDisplay: InfoAbsensiDisplay(
+                                          controller
+                                              .absen_month_list[posisiAbsen]));
+                                },
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -253,6 +303,116 @@ class home_user_viewView extends ViewState<home_user_view, home_user_controller>
   }
   @override
   void afterFirstLayout(BuildContext context) async {}
+}
+
+class _rowAbsensi extends StatelessWidget {
+  final InfoAbsensiDisplay theAbsensiDisplay;
+  const _rowAbsensi({
+    Key? key,
+    required this.theAbsensiDisplay,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15.0),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 4.5,
+              spreadRadius: 2.0,
+              offset: Offset(
+                0,
+                0,
+              ),
+            )
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10.0,
+            vertical: 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "${theAbsensiDisplay.theAbsensi.theUser!.name}",
+                style: TextStyle(
+                  fontSize: 14.0,
+                  fontFamily: "Popins",
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "${theAbsensiDisplay.labelAbsenIn}",
+                style: TextStyle(
+                  fontSize: 12.0,
+                  fontFamily: "Popins",
+                  color: Colors.grey,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Center(
+                              child: FaIcon(FontAwesomeIcons.signInAlt,
+                                  size: 20, color: Warna.warnaBiru),
+                            ),
+                          ),
+                          Text(
+                            "${theAbsensiDisplay.labelJamAbsenIn}",
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              fontFamily: "Popins",
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10.0),
+                          child: Center(
+                            child: FaIcon(FontAwesomeIcons.doorClosed,
+                                size: 20, color: Warna.warnaBiru),
+                          ),
+                        ),
+                        Text(
+                          "${theAbsensiDisplay.labelJamAbsenOut}",
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            fontFamily: "Popins",
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _menuHome extends StatelessWidget {
