@@ -10,6 +10,8 @@ import 'package:intro_slider/slide_object.dart';
 import 'package:keluarmasuk/app/pages/akun_login/akun_login_view.dart';
 import 'package:keluarmasuk/app/pages/home_user/home_user_view.dart';
 import 'package:keluarmasuk/app/pages/utils/TampilanDialog.dart';
+import 'package:keluarmasuk/domain/entities/AbsensiUser.dart';
+import 'package:keluarmasuk/domain/entities/FilterAbsensi.dart';
 import 'package:keluarmasuk/domain/entities/IsiFormAbsensi.dart';
 import 'package:keluarmasuk/domain/entities/Respon.dart';
 import 'package:keluarmasuk/domain/entities/UserAplikasi.dart';
@@ -21,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //auto_darttecture_import_usecase_UserLogoutUseCase
 //auto_darttecture_import_usecase_GetCurrentUserUseCase
+//auto_darttecture_import_usecase_GetAbsensiUserListUseCase
 import 'package:keluarmasuk/domain/repositories/UserRepository.dart';
 
 class home_user_controller extends Controller {
@@ -44,9 +47,20 @@ class home_user_controller extends Controller {
   var StatusByUseCaseGetCurrentUserUseCase = "idle";
   var MessageByUseCaseGetCurrentUserUseCase = "";
 //endControllerUseCaseVarDeclarationForGetCurrentUserUseCase
+  //startControllerUseCaseVarDeclarationForGetAbsensiUserListUseCase
+  late Function(String errorMessageByUseCaseGetAbsensiUserListUseCase)
+      tambahan_callGetAbsensiUserListUseCaseOnError;
+  late Function(AbsensiUser) tambahan_callGetAbsensiUserListUseCaseOnNext;
+  late Function tambahan_callGetAbsensiUserListUseCaseOnComplete;
+  var StartedUseCaseGetAbsensiUserListUseCase = false;
+  var StatusByUseCaseGetAbsensiUserListUseCase = "idle";
+  var MessageByUseCaseGetAbsensiUserListUseCase = "";
+//endControllerUseCaseVarDeclarationForGetAbsensiUserListUseCase
   home_user_controller(
+    AbsensiUserRepository _AbsensiUserRepository,
     UserRepository _UserRepository,
   ) : _home_user_presenter = home_user_presenter(
+          _AbsensiUserRepository,
           _UserRepository,
         ) {
     //getAuthStatus();
@@ -55,14 +69,41 @@ class home_user_controller extends Controller {
   }
 
   late UserAplikasi theUser;
+  List<AbsensiUser> absen_day_list = [];
+  List<AbsensiUser> absen_month_list = [];
 
   @override
   void onInitState() {
+    var dateMonthFrom = DateTime.now().subtract(Duration(days: 30));
+    var dateMonthTo = DateTime.now();
+    var dateDayFrom = DateTime.now().subtract(Duration(days: 1));
+    var dateDayTo = DateTime.now();
     callGetCurrentUserUseCase(
-        onNext: (user) {
-          theUser = user;
-        },
-        onComplete: stopLoading);
+      onNext: (user) {
+        theUser = user;
+        //mengambil absen bulan ini
+        callGetAbsensiUserListUseCase(
+          theFilter: FilterAbsensi(
+              dateFrom: dateMonthFrom.millisecondsSinceEpoch,
+              dateTo: dateMonthTo.millisecondsSinceEpoch),
+          onNext: (theAbsensi) {
+            absen_month_list.add(theAbsensi);
+          },
+          onComplete: (){
+            //mengambil absen hari ini
+            callGetAbsensiUserListUseCase(
+          theFilter: FilterAbsensi(
+             dateFrom: dateDayFrom.millisecondsSinceEpoch,
+              dateTo: dateDayTo.millisecondsSinceEpoch),
+          onNext: (theAbsensi) {
+            absen_day_list.add(theAbsensi);
+          },
+          onComplete: stopLoading,
+        );
+          },
+        );
+      },
+    );
   }
 
   bool onLoading = true;
@@ -101,6 +142,16 @@ class home_user_controller extends Controller {
     _home_user_presenter.ListenUseCaseGetCurrentUserUseCaseOnComplete =
         this.ListenUseCaseGetCurrentUserUseCaseOnComplete;
 //stopPresenterListenerOnUseCaseGetCurrentUserUseCase
+    //startPresenterListenerOnUseCaseGetAbsensiUserListUseCase
+    _home_user_presenter.ListenUseCaseGetAbsensiUserListUseCaseOnNext =
+        (AbsensiUser the_value) {
+      this.ListenUseCaseGetAbsensiUserListUseCaseOnNext(the_value);
+    };
+    _home_user_presenter.ListenUseCaseGetAbsensiUserListUseCaseOnError =
+        this.ListenUseCaseGetAbsensiUserListUseCaseOnError;
+    _home_user_presenter.ListenUseCaseGetAbsensiUserListUseCaseOnComplete =
+        this.ListenUseCaseGetAbsensiUserListUseCaseOnComplete;
+//stopPresenterListenerOnUseCaseGetAbsensiUserListUseCase
   }
 
   BuildContext? dialogContext;
@@ -256,5 +307,79 @@ class home_user_controller extends Controller {
     //refreshUI();
   }
 //stopListenerOnUseCaseGetCurrentUserUseCase
+
+//startControllerCallUseCaseGetAbsensiUserListUseCase
+  static defaultFuncONNextGetAbsensiUserListUseCase(AbsensiUser theValue) {}
+  static defaultFuncONErrorGetAbsensiUserListUseCase(String errorMessage) {}
+  static defaultFuncONCompleteGetAbsensiUserListUseCase() {}
+  void callGetAbsensiUserListUseCase(
+      {required FilterAbsensi theFilter,
+      Function(AbsensiUser) onNext = defaultFuncONNextGetAbsensiUserListUseCase,
+      Function(String errorMessageByUseCaseGetAbsensiUserListUseCase) onError =
+          defaultFuncONErrorGetAbsensiUserListUseCase,
+      Function onComplete =
+          defaultFuncONCompleteGetAbsensiUserListUseCase}) async {
+    tambahan_callGetAbsensiUserListUseCaseOnNext = onNext;
+    tambahan_callGetAbsensiUserListUseCaseOnError = onError;
+    tambahan_callGetAbsensiUserListUseCaseOnComplete = onComplete;
+    StatusByUseCaseGetAbsensiUserListUseCase = "ongoing";
+    StartedUseCaseGetAbsensiUserListUseCase = true;
+    //showLoading();
+    // so the animation can be seen
+    print("controller try callGetAbsensiUserListUseCase");
+    Future.delayed(Duration(seconds: 0),
+        () => _home_user_presenter.callGetAbsensiUserListUseCase(theFilter));
+  }
+
+//endControllerCallUseCaseGetAbsensiUserListUseCase
+//startListenerOnUseCaseGetAbsensiUserListUseCase
+  void ListenUseCaseGetAbsensiUserListUseCaseOnNext(AbsensiUser the_value) {
+    //get called when usecase GetAbsensiUserListUseCase return value
+    //dismissLoading();
+    StatusByUseCaseGetAbsensiUserListUseCase = "onnext";
+//startDefaultFunctionOnListenUseCaseGetAbsensiUserListUseCaseOnNext
+//endDefaultFunctionOnListenUseCaseGetAbsensiUserListUseCaseOnNext
+    if (tambahan_callGetAbsensiUserListUseCaseOnNext != null) {
+//Future.delayed(Duration(seconds: 0), ()=>tambahan_callGetAbsensiUserListUseCaseOnNext());
+      tambahan_callGetAbsensiUserListUseCaseOnNext(the_value);
+    }
+    //
+    //print("dapat layanan : " + the_categories.length.toString());
+    //refreshUI();
+  }
+
+  void ListenUseCaseGetAbsensiUserListUseCaseOnError(e) {
+    StatusByUseCaseGetAbsensiUserListUseCase = "onerror";
+    MessageByUseCaseGetAbsensiUserListUseCase = e.toString();
+    //get called when usecase GetAbsensiUserListUseCase return error
+    //dismissLoading();
+    //showGenericSnackbar(getStateKey(), e.message, isError: true);
+//startDefaultFunctionOnListenUseCaseGetAbsensiUserListUseCaseOnError
+//endDefaultFunctionOnListenUseCaseGetAbsensiUserListUseCaseOnError
+    if (tambahan_callGetAbsensiUserListUseCaseOnError != null) {
+//Future.delayed(Duration(seconds: 0), ()=>tambahan_callGetAbsensiUserListUseCaseonError());
+      tambahan_callGetAbsensiUserListUseCaseOnError(e);
+    }
+    //layanan_list = null;
+    print("dapat error dari GetAbsensiUserListUseCase");
+    //refreshUI();
+  }
+
+  void ListenUseCaseGetAbsensiUserListUseCaseOnComplete() {
+    StatusByUseCaseGetAbsensiUserListUseCase = "oncomplete";
+    //get called when usecase GetAbsensiUserListUseCase return error
+    //dismissLoading();
+    //showGenericSnackbar(getStateKey(), e.message, isError: true);
+//startDefaultFunctionOnListenUseCaseGetAbsensiUserListUseCaseOnComplete
+//endDefaultFunctionOnListenUseCaseGetAbsensiUserListUseCaseOnComplete
+    if (tambahan_callGetAbsensiUserListUseCaseOnComplete != null) {
+//Future.delayed(Duration(seconds: 0), ()=>tambahan_callGetAbsensiUserListUseCaseonComplete());
+      tambahan_callGetAbsensiUserListUseCaseOnComplete();
+    }
+    //layanan_list = null;
+    print("dapat oncomplete dari GetAbsensiUserListUseCase");
+    //refreshUI();
+  }
+//stopListenerOnUseCaseGetAbsensiUserListUseCase
 }
 //auto_darttecture_class_outside

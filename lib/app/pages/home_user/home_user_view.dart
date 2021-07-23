@@ -16,9 +16,10 @@ import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
 import 'package:keluarmasuk/app/pages/form_absensi/form_absensi_view.dart';
 import 'package:keluarmasuk/app/pages/form_cari_absen/form_cari_absen_view.dart';
-import 'package:keluarmasuk/app/pages/list_absensi/list_absensi_view.dart';
+import 'package:keluarmasuk/app/pages/home_user/home_user_view.dart';
 import 'package:keluarmasuk/app/utils/Warna.dart';
 import 'package:keluarmasuk/app/widgets/RPSCustomPainter.dart';
+import 'package:keluarmasuk/data/repositories/DataAbsensiUserRepository.dart';
 import 'package:keluarmasuk/data/repositories/DataUserRepository.dart';
 import 'home_user_controller.dart';
 import 'package:after_layout/after_layout.dart';
@@ -27,8 +28,8 @@ import 'package:after_layout/after_layout.dart';
 class home_user_view extends View {
   home_user_view();
   @override
-  home_user_viewView createState() =>
-      home_user_viewView(home_user_controller(DataUserRepository()));
+  home_user_viewView createState() => home_user_viewView(
+      home_user_controller(DataAbsensiUserRepository(), DataUserRepository()));
 }
 
 class home_user_viewView extends ViewState<home_user_view, home_user_controller>
@@ -118,7 +119,7 @@ class home_user_viewView extends ViewState<home_user_view, home_user_controller>
                                                 ),
                                               ),
                                               Text(
-                                                "3",
+                                                "${controller.absen_day_list.length}",
                                                 style: TextStyle(
                                                   fontSize: 16.0,
                                                   fontFamily: "Popins",
@@ -161,7 +162,7 @@ class home_user_viewView extends ViewState<home_user_view, home_user_controller>
                                                 ),
                                               ),
                                               Text(
-                                                "3",
+                                                "${controller.absen_month_list.length}",
                                                 style: TextStyle(
                                                   fontSize: 16.0,
                                                   fontFamily: "Popins",
