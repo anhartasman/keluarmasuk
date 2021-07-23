@@ -148,6 +148,36 @@ class DbHelper {
     return theRespon;
   }
 
+  Future<ResponGlobal<AbsensiUser>> getCurrentAbsensi(UserAplikasi the_user) async{
+      final db = await openDB();
+    var theRespon = new ResponGlobal<AbsensiUser>();
+    try{
+      String whereAbsenString = 'userId = ${the_user.id}';
+      String whereUserString = 'id = ${the_user.id}';
+
+      List<Map<String, Object?>> result = await db.query(AbsensiUserQuery.TABLE_NAME,where:whereAbsenString);
+      
+      if(result.length==0){
+        throw("Absen not fount");
+      }
+        theRespon.the_respon=AbsensiUser.fromMap(result[0]);
+       
+      List<Map<String, Object?>> resultUser = await db.query(UserQuery.TABLE_NAME,where:whereUserString);
+      
+      if(resultUser.length==0){
+        throw("User with id ${the_user.id} not found");
+      }
+        theRespon.the_respon!.theUser=UserAplikasi.fromMap(resultUser[0]);
+      
+    }catch(error){
+      print("Gagal getCurrentAbsensi "+error.toString());
+      theRespon.success=false;
+      theRespon.error_msg = error.toString();
+    }
+
+    return theRespon;
+  }
+
   insert(String table, Map<String, Object> data) {
     openDB().then((db) {
       db.insert(table, data, conflictAlgorithm: ConflictAlgorithm.replace);

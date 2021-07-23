@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intro_slider/slide_object.dart';
+import 'package:keluarmasuk/domain/entities/AbsensiUser.dart';
 import 'package:keluarmasuk/domain/entities/IsiFormAbsensi.dart';
 import 'package:keluarmasuk/domain/entities/Respon.dart';
 import 'package:keluarmasuk/domain/repositories/AbsensiUserRepository.dart';
@@ -17,6 +18,7 @@ import 'form_absensi_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //auto_darttecture_import_usecase_InsertAbsensiUserUseCase
+//auto_darttecture_import_usecase_GetCurrentAbsensiUserUseCase
 import 'package:keluarmasuk/domain/repositories/UserRepository.dart';
 
 
@@ -32,6 +34,16 @@ class form_absensi_controller extends Controller {
   var StatusByUseCaseInsertAbsensiUserUseCase = "idle";
   var MessageByUseCaseInsertAbsensiUserUseCase = "";
 //endControllerUseCaseVarDeclarationForInsertAbsensiUserUseCase
+//startControllerUseCaseVarDeclarationForGetCurrentAbsensiUserUseCase
+  late Function(String errorMessageByUseCaseGetCurrentAbsensiUserUseCase)
+      tambahan_callGetCurrentAbsensiUserUseCaseOnError;
+  late Function(AbsensiUser) tambahan_callGetCurrentAbsensiUserUseCaseOnNext;
+  late Function tambahan_callGetCurrentAbsensiUserUseCaseOnComplete;
+  var StartedUseCaseGetCurrentAbsensiUserUseCase = false;
+  var StatusByUseCaseGetCurrentAbsensiUserUseCase = "idle";
+  var MessageByUseCaseGetCurrentAbsensiUserUseCase = "";
+//endControllerUseCaseVarDeclarationForGetCurrentAbsensiUserUseCase
+
   form_absensi_controller(
     AbsensiUserRepository _AbsensiUserRepository,
     UserRepository _UserRepository,
@@ -44,15 +56,18 @@ class form_absensi_controller extends Controller {
     //countProductInCart();
     initListeners();
   }
+
+  AbsensiUser? currentAbsensi;
+
   @override
   void onInitState() {
 
     final planDate = DateTime.now();
     labelTanggal = DateFormat("yyyy-MM-dd").format(planDate);
-
-    Future.delayed(Duration(seconds: 1), () {
-      stopLoading();
-    });
+    callGetCurrentAbsensiUserUseCase(onNext:(theAbsensi){
+      currentAbsensi=theAbsensi;
+    },onError:(e)=>stopLoading(),onComplete: stopLoading);
+   
   }
 
   bool onLoading = true;
@@ -84,7 +99,18 @@ class form_absensi_controller extends Controller {
     _form_absensi_presenter.ListenUseCaseInsertAbsensiUserUseCaseOnComplete =
         this.ListenUseCaseInsertAbsensiUserUseCaseOnComplete;
 //stopPresenterListenerOnUseCaseInsertAbsensiUserUseCase
-  }
+  
+//startPresenterListenerOnUseCaseGetCurrentAbsensiUserUseCase
+    _form_absensi_presenter.ListenUseCaseGetCurrentAbsensiUserUseCaseOnNext =
+        (AbsensiUser the_value) {
+      this.ListenUseCaseGetCurrentAbsensiUserUseCaseOnNext(the_value);
+    };
+    _form_absensi_presenter.ListenUseCaseGetCurrentAbsensiUserUseCaseOnError =
+        this.ListenUseCaseGetCurrentAbsensiUserUseCaseOnError;
+    _form_absensi_presenter.ListenUseCaseGetCurrentAbsensiUserUseCaseOnComplete =
+        this.ListenUseCaseGetCurrentAbsensiUserUseCaseOnComplete;
+//stopPresenterListenerOnUseCaseGetCurrentAbsensiUserUseCase
+ }
 
   BuildContext? dialogContext;
   void handlePermissions() {}
@@ -164,5 +190,78 @@ class form_absensi_controller extends Controller {
     //refreshUI();
   }
 //stopListenerOnUseCaseInsertAbsensiUserUseCase
+//startControllerCallUseCaseGetCurrentAbsensiUserUseCase
+  static defaultFuncONNextGetCurrentAbsensiUserUseCase(AbsensiUser theValue) {}
+  static defaultFuncONErrorGetCurrentAbsensiUserUseCase(String errorMessage) {}
+  static defaultFuncONCompleteGetCurrentAbsensiUserUseCase() {}
+  void callGetCurrentAbsensiUserUseCase(
+      {Function(AbsensiUser) onNext =
+          defaultFuncONNextGetCurrentAbsensiUserUseCase,
+      Function(String errorMessageByUseCaseGetCurrentAbsensiUserUseCase) onError =
+          defaultFuncONErrorGetCurrentAbsensiUserUseCase,
+      Function onComplete =
+          defaultFuncONCompleteGetCurrentAbsensiUserUseCase}) async {
+    tambahan_callGetCurrentAbsensiUserUseCaseOnNext = onNext;
+    tambahan_callGetCurrentAbsensiUserUseCaseOnError = onError;
+    tambahan_callGetCurrentAbsensiUserUseCaseOnComplete = onComplete;
+    StatusByUseCaseGetCurrentAbsensiUserUseCase = "ongoing";
+    StartedUseCaseGetCurrentAbsensiUserUseCase = true;
+    //showLoading();
+    // so the animation can be seen
+    print("controller try callGetCurrentAbsensiUserUseCase");
+    Future.delayed(Duration(seconds: 0),
+        () => _form_absensi_presenter.callGetCurrentAbsensiUserUseCase());
+  }
+
+//endControllerCallUseCaseGetCurrentAbsensiUserUseCase
+//startListenerOnUseCaseGetCurrentAbsensiUserUseCase
+  void ListenUseCaseGetCurrentAbsensiUserUseCaseOnNext(AbsensiUser the_value) {
+    //get called when usecase GetCurrentAbsensiUserUseCase return value
+    //dismissLoading();
+    StatusByUseCaseGetCurrentAbsensiUserUseCase = "onnext";
+//startDefaultFunctionOnListenUseCaseGetCurrentAbsensiUserUseCaseOnNext
+//endDefaultFunctionOnListenUseCaseGetCurrentAbsensiUserUseCaseOnNext
+    if (tambahan_callGetCurrentAbsensiUserUseCaseOnNext != null) {
+//Future.delayed(Duration(seconds: 0), ()=>tambahan_callGetCurrentAbsensiUserUseCaseOnNext());
+      tambahan_callGetCurrentAbsensiUserUseCaseOnNext(the_value);
+    }
+    //
+    //print("dapat layanan : " + the_categories.length.toString());
+    //refreshUI();
+  }
+
+  void ListenUseCaseGetCurrentAbsensiUserUseCaseOnError(e) {
+    StatusByUseCaseGetCurrentAbsensiUserUseCase = "onerror";
+    MessageByUseCaseGetCurrentAbsensiUserUseCase = e.toString();
+    //get called when usecase GetCurrentAbsensiUserUseCase return error
+    //dismissLoading();
+    //showGenericSnackbar(getStateKey(), e.message, isError: true);
+//startDefaultFunctionOnListenUseCaseGetCurrentAbsensiUserUseCaseOnError
+//endDefaultFunctionOnListenUseCaseGetCurrentAbsensiUserUseCaseOnError
+    if (tambahan_callGetCurrentAbsensiUserUseCaseOnError != null) {
+//Future.delayed(Duration(seconds: 0), ()=>tambahan_callGetCurrentAbsensiUserUseCaseonError());
+      tambahan_callGetCurrentAbsensiUserUseCaseOnError(e);
+    }
+    //layanan_list = null;
+    print("dapat error dari GetCurrentAbsensiUserUseCase");
+    //refreshUI();
+  }
+
+  void ListenUseCaseGetCurrentAbsensiUserUseCaseOnComplete() {
+    StatusByUseCaseGetCurrentAbsensiUserUseCase = "oncomplete";
+    //get called when usecase GetCurrentAbsensiUserUseCase return error
+    //dismissLoading();
+    //showGenericSnackbar(getStateKey(), e.message, isError: true);
+//startDefaultFunctionOnListenUseCaseGetCurrentAbsensiUserUseCaseOnComplete
+//endDefaultFunctionOnListenUseCaseGetCurrentAbsensiUserUseCaseOnComplete
+    if (tambahan_callGetCurrentAbsensiUserUseCaseOnComplete != null) {
+//Future.delayed(Duration(seconds: 0), ()=>tambahan_callGetCurrentAbsensiUserUseCaseonComplete());
+      tambahan_callGetCurrentAbsensiUserUseCaseOnComplete();
+    }
+    //layanan_list = null;
+    print("dapat oncomplete dari GetCurrentAbsensiUserUseCase");
+    //refreshUI();
+  }
+//stopListenerOnUseCaseGetCurrentAbsensiUserUseCase
 }
 //auto_darttecture_class_outside

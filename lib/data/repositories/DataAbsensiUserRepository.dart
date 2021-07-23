@@ -5,6 +5,7 @@ import 'package:keluarmasuk/data/database/queries/AbsensiUserQuery.dart';
 import 'package:keluarmasuk/domain/entities/AbsensiUser.dart';
 import 'package:keluarmasuk/domain/entities/IsiFormAbsensi.dart';
 import 'package:keluarmasuk/domain/entities/Respon.dart';
+import 'package:keluarmasuk/domain/entities/ResponGlobal.dart';
 
 import 'package:keluarmasuk/domain/entities/UserAplikasi.dart';
 import 'package:keluarmasuk/domain/repositories/AbsensiUserRepository.dart';
@@ -15,6 +16,13 @@ import '../DbHelper.dart';
 /// in the Domain layer. It communicates with the server, making API calls to register, login, logout, and
 /// store a `RumahPlong`.
 class DataAbsensiUserRepository implements AbsensiUserRepository {
+  Future<ResponGlobal<AbsensiUser>> getCurrentAbsensi(
+      UserAplikasi the_user) async {
+final DbHelper _helper = new DbHelper();
+final theRespon = _helper.getCurrentAbsensi(the_user);
+
+    return Future.value(theRespon);
+  }
   Future<List<AbsensiUser>> getAbsensiUserList(
       UserAplikasi the_user) async {
     //return Future.value(kContacts);
