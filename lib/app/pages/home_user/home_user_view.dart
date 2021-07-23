@@ -107,7 +107,7 @@ class home_user_viewView extends ViewState<home_user_view, home_user_controller>
                               children: [
                                 InkWell(
                                   onTap: () {
-                                    Get.to(form_cari_absen_view());
+                                    Get.to(form_absensi_view());
                                   },
                                   child: _menuHome(
                                     title: "Absensi",
@@ -119,7 +119,7 @@ class home_user_viewView extends ViewState<home_user_view, home_user_controller>
                                   padding: const EdgeInsets.only(top: 15.0),
                                   child: InkWell(
                                     onTap: () {
-                                      Get.to(list_absensi_view());
+                                      Get.to(form_cari_absen_view());
                                     },
                                     child: _menuHome(
                                       title: "Data Absensi",

@@ -104,6 +104,7 @@ class form_cari_absen_viewView
                           borderRadius: new BorderRadius.circular(25.0),
                         ),
                         child: new FormBuilderTextField(
+                          readOnly: true,
                           onTap: controller.cariDateFrom,
                           name: "labelDateFrom",
                           controller: controller.txtLabelDateFrom,
@@ -126,6 +127,7 @@ class form_cari_absen_viewView
                           borderRadius: new BorderRadius.circular(25.0),
                         ),
                         child: new FormBuilderTextField(
+                          readOnly: true,
                           onTap: controller.cariDateTo,
                           name: "labelDateTo",
                           controller: controller.txtLabelDateTo,
@@ -154,7 +156,7 @@ class form_cari_absen_viewView
                               padding: const EdgeInsets.all(15.0),
                               child: Center(
                                 child: Text(
-                                  "Konfirm Absen",
+                                  "Cari Absen",
                                   style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.white,

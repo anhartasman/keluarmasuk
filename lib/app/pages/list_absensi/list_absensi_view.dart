@@ -5,7 +5,6 @@ import 'dart:typed_data';
 import 'package:shimmer/shimmer.dart';
 import 'package:intl/intl.dart';
 
-
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -26,7 +25,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:keluarmasuk/data/repositories/DataAbsensiUserRepository.dart';
 import 'package:keluarmasuk/data/repositories/DataUserRepository.dart';
 
-
 class list_absensi_view extends View {
   list_absensi_view();
   @override
@@ -34,7 +32,6 @@ class list_absensi_view extends View {
       list_absensi_viewView(list_absensi_controller(
         new DataAbsensiUserRepository(),
         new DataUserRepository(),
-        
       ));
 }
 
@@ -154,25 +151,9 @@ class list_absensi_viewView
                         padding: const EdgeInsets.only(top: 15.0),
                         child: Row(
                           children: [
-                            Text(
-                              "Status Data Klien",
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                fontFamily: "Popins",
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15.0),
-                        child: Row(
-                          children: [
                             Expanded(
                               child: Text(
-                                "Terverifikasi",
+                                "Dari Tanggal",
                                 style: TextStyle(
                                   fontSize: 14.0,
                                   fontFamily: "Popins",
@@ -203,7 +184,7 @@ class list_absensi_viewView
                           children: [
                             Expanded(
                               child: Text(
-                                "Data Tidak Lengkap",
+                                "Hingga Tanggal",
                                 style: TextStyle(
                                   fontSize: 14.0,
                                   fontFamily: "Popins",
@@ -244,7 +225,7 @@ class list_absensi_viewView
                           children: [
                             Expanded(
                               child: Text(
-                                "Total",
+                                "Jumlah",
                                 style: TextStyle(
                                   fontSize: 14.0,
                                   fontFamily: "Popins",

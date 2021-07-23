@@ -70,7 +70,7 @@ class form_cari_absen_controller extends Controller {
       context: getContext(),
       locale: Locale("id", "ID"),
       initialDate: dateTo,
-      firstDate: DateTime(DateTime.now().year - 20),
+      firstDate: dateFrom,
       lastDate: DateTime.now(),
       borderRadius: 16,
     ).then((newDateTime) {
