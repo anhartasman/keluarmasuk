@@ -10,7 +10,7 @@ import 'package:intro_slider/slide_object.dart';
 import 'package:keluarmasuk/app/pages/home_user/home_user_view.dart';
 import 'package:keluarmasuk/app/pages/utils/TampilanDialog.dart';
 import 'package:keluarmasuk/domain/entities/IsiFormAbsensi.dart';
-import 'package:keluarmasuk/domain/entities/Respon.dart';
+import 'package:keluarmasuk/domain/entities/UserAplikasi.dart';
 import 'package:keluarmasuk/domain/repositories/AbsensiUserRepository.dart';
 
 import 'package:place_picker/place_picker.dart';
@@ -27,7 +27,7 @@ class akun_login_controller extends Controller {
 //startControllerUseCaseVarDeclarationForUserLoginUseCase
   late Function(String errorMessageByUseCaseUserLoginUseCase)
       tambahan_callUserLoginUseCaseOnError;
-  late Function(Respon) tambahan_callUserLoginUseCaseOnNext;
+  late Function(UserAplikasi) tambahan_callUserLoginUseCaseOnNext;
   late Function tambahan_callUserLoginUseCaseOnComplete;
   var StartedUseCaseUserLoginUseCase = false;
   var StatusByUseCaseUserLoginUseCase = "idle";
@@ -85,7 +85,7 @@ class akun_login_controller extends Controller {
     //use_case_initListener
 //startPresenterListenerOnUseCaseUserLoginUseCase
     _akun_login_presenter.ListenUseCaseUserLoginUseCaseOnNext =
-        (Respon the_value) {
+        (UserAplikasi the_value) {
       this.ListenUseCaseUserLoginUseCaseOnNext(the_value);
     };
     _akun_login_presenter.ListenUseCaseUserLoginUseCaseOnError =
@@ -101,11 +101,11 @@ class akun_login_controller extends Controller {
  
 //auto_darttecture_class_body
 //startControllerCallUseCaseUserLoginUseCase
-  static defaultFuncONNextUserLoginUseCase(Respon theValue) {}
+  static defaultFuncONNextUserLoginUseCase(UserAplikasi theValue) {}
   static defaultFuncONErrorUserLoginUseCase(String errorMessage) {}
   static defaultFuncONCompleteUserLoginUseCase() {}
   void callUserLoginUseCase(
-      {required String email,required String password,Function(Respon) onNext =
+      {required String email,required String password,Function(UserAplikasi) onNext =
           defaultFuncONNextUserLoginUseCase,
       Function(String errorMessageByUseCaseUserLoginUseCase) onError =
           defaultFuncONErrorUserLoginUseCase,
@@ -125,7 +125,7 @@ class akun_login_controller extends Controller {
 
 //endControllerCallUseCaseUserLoginUseCase
 //startListenerOnUseCaseUserLoginUseCase
-  void ListenUseCaseUserLoginUseCaseOnNext(Respon the_value) {
+  void ListenUseCaseUserLoginUseCaseOnNext(UserAplikasi the_value) {
     //get called when usecase UserLoginUseCase return value
     //dismissLoading();
     StatusByUseCaseUserLoginUseCase = "onnext";

@@ -19,9 +19,9 @@ class UserRegisterUseCase
       print("ceraceracera");
       // User the_user = (await _UserRepository.getUserAccount()).the_user;
       print("popopopop");
-      final the_respon = await _UserRepository.registerUserAccount(params!.name,params!.email,params.password);
+      final the_respon = await _UserRepository.registerUserAccount(params!.name,params.email,params.password);
       if (!the_respon.success) {
-        throw (the_respon.error_msg);
+        throw ("${the_respon.error_msg}");
       }
       
       controller.add(the_respon.the_respon!);

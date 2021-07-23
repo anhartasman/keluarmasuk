@@ -3,6 +3,7 @@ import 'package:keluarmasuk/domain/entities/IsiFormAbsensi.dart';
 import 'package:keluarmasuk/domain/entities/Respon.dart';
 import 'package:keluarmasuk/domain/entities/ResponGlobal.dart';
 import 'package:keluarmasuk/domain/entities/UserAplikasi.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart' as sqlite;
 import 'package:sqflite/sqlite_api.dart';
 import 'package:path/path.dart' as path;
@@ -30,6 +31,16 @@ class DbHelper {
   Future<Database> openDB() async {
     final dbPath = await sqlite.getDatabasesPath();
     return sqlite.openDatabase(path.join(dbPath, 'thengoding.db'),
+    onUpgrade:(db, oldVersion,newVersion){
+      tables.forEach((table) async {
+        await db.execute("DROP TABLE ${table}");
+        await db.execute(table).then((value) {
+          print("berashil ");
+        }).catchError((err) {
+          print("errornya ${err.toString()}");
+        });
+      });
+    } ,
         onCreate: (db, version) {
       tables.forEach((table) async {
         await db.execute(table).then((value) {
@@ -39,7 +50,7 @@ class DbHelper {
         });
       });
       print('Table Created');
-    }, version: 1);
+    }, version: 3);
   }
 
   Future<Respon> insertAbsensiUser(IsiFormAbsensi isiForm) async{
@@ -89,7 +100,13 @@ class DbHelper {
       List<Map<String, Object?>> result = await db.query(UserQuery.TABLE_NAME,where:whereString);
       
       if(result.length>0){
-        theRespon.the_respon=UserAplikasi.fromMap(result[0]);
+        var theOne=Map.of(result[0]);
+        theOne.update("id", (value) => theOne["id"].toString());
+        
+        theRespon.the_respon=UserAplikasi.fromMap(theOne);
+        
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences.setString("currentAccount", theRespon.the_respon!.toJson());
       }else{
         throw("Email ${email} not found");
       }
@@ -112,13 +129,18 @@ class DbHelper {
       if(result.length>0){
         throw("Email ${email} already exist");
       }else{
-        insert(UserQuery.TABLE_NAME,{
+        await db.insert(UserQuery.TABLE_NAME,{
           "name":name,
           "email":email,
           "password":password,
+        }).catchError((e){
+        throw(e.toString());
         });
+
+        theRespon.the_respon=UserAplikasi(id:"",name:name,email:email,password:password);
       }
     }catch(error){
+      print("Gagal register "+error.toString());
       theRespon.success=false;
       theRespon.error_msg = error.toString();
     }

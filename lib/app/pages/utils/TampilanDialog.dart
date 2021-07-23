@@ -232,4 +232,9 @@ class TemaIkonDialog {
     size: 30,
     color: Colors.red,
   );
+  static const FaIcon succcess = FaIcon(
+    FontAwesomeIcons.checkCircle,
+    size: 30,
+    color: Colors.green,
+  );
 }

@@ -10,7 +10,7 @@ import 'package:intro_slider/slide_object.dart';
 import 'package:keluarmasuk/app/pages/home_user/home_user_view.dart';
 import 'package:keluarmasuk/app/pages/utils/TampilanDialog.dart';
 import 'package:keluarmasuk/domain/entities/IsiFormAbsensi.dart';
-import 'package:keluarmasuk/domain/entities/Respon.dart';
+import 'package:keluarmasuk/domain/entities/UserAplikasi.dart';
 import 'package:keluarmasuk/domain/repositories/AbsensiUserRepository.dart';
 
 import 'package:place_picker/place_picker.dart';
@@ -27,7 +27,7 @@ class akun_register_controller extends Controller {
 //startControllerUseCaseVarDeclarationForUserRegisterUseCase
   late Function(String errorMessageByUseCaseUserRegisterUseCase)
       tambahan_callUserRegisterUseCaseOnError;
-  late Function(Respon) tambahan_callUserRegisterUseCaseOnNext;
+  late Function(UserAplikasi) tambahan_callUserRegisterUseCaseOnNext;
   late Function tambahan_callUserRegisterUseCaseOnComplete;
   var StartedUseCaseUserRegisterUseCase = false;
   var StatusByUseCaseUserRegisterUseCase = "idle";
@@ -57,7 +57,10 @@ class akun_register_controller extends Controller {
 
       TampilanDialog.alertDialog("Gagal Register", "${e}");
       },onNext: (theRespon){
-        Get.to(home_user_view());
+        TampilanDialog.showDialogPesanAlert("Berhasil","Silahkan login",the_icon:TemaIkonDialog.succcess).then((value){
+          Get.back();
+        });
+        
       });
       
     }
@@ -87,7 +90,7 @@ class akun_register_controller extends Controller {
     //use_case_initListener
 //startPresenterListenerOnUseCaseUserRegisterUseCase
     _akun_register_presenter.ListenUseCaseUserRegisterUseCaseOnNext =
-        (Respon the_value) {
+        (UserAplikasi the_value) {
       this.ListenUseCaseUserRegisterUseCaseOnNext(the_value);
     };
     _akun_register_presenter.ListenUseCaseUserRegisterUseCaseOnError =
@@ -103,11 +106,11 @@ class akun_register_controller extends Controller {
  
 //auto_darttecture_class_body
 //startControllerCallUseCaseUserRegisterUseCase
-  static defaultFuncONNextUserRegisterUseCase(Respon theValue) {}
+  static defaultFuncONNextUserRegisterUseCase(UserAplikasi theValue) {}
   static defaultFuncONErrorUserRegisterUseCase(String errorMessage) {}
   static defaultFuncONCompleteUserRegisterUseCase() {}
   void callUserRegisterUseCase(
-      {required String name,required String email,required String password,Function(Respon) onNext =
+      {required String name,required String email,required String password,Function(UserAplikasi) onNext =
           defaultFuncONNextUserRegisterUseCase,
       Function(String errorMessageByUseCaseUserRegisterUseCase) onError =
           defaultFuncONErrorUserRegisterUseCase,
@@ -127,7 +130,7 @@ class akun_register_controller extends Controller {
 
 //endControllerCallUseCaseUserRegisterUseCase
 //startListenerOnUseCaseUserRegisterUseCase
-  void ListenUseCaseUserRegisterUseCaseOnNext(Respon the_value) {
+  void ListenUseCaseUserRegisterUseCaseOnNext(UserAplikasi the_value) {
     //get called when usecase UserRegisterUseCase return value
     //dismissLoading();
     StatusByUseCaseUserRegisterUseCase = "onnext";
