@@ -102,6 +102,8 @@ class DbHelper {
     try {
       String whereString = 'sedangIn = 1 AND userId = ${the_user.id}';
 
+      String whereUpdateString = 'sedangIn = ? AND userId = ?';
+
       List<Map<String, Object?>> result =
           await db.query(AbsensiUserQuery.TABLE_NAME, where: whereString);
       bool dapatIn = false;
@@ -113,11 +115,14 @@ class DbHelper {
       final waktuSekarang = DateTime.now();
 
       if (dapatIn) {
-        var oldResult = result[0];
-        oldResult["sedangIn"] = 0;
-        oldResult["absenOut"] = waktuSekarang.millisecondsSinceEpoch;
-        await db.update(AbsensiUserQuery.TABLE_NAME, oldResult,
-            where: whereString);
+        Map<String, dynamic> row = {
+          "sedangIn": 0,
+          "absenOut": waktuSekarang.millisecondsSinceEpoch
+        };
+
+        await db.update(AbsensiUserQuery.TABLE_NAME, row,
+            where: whereUpdateString, whereArgs: [1, the_user.id]);
+        print("selesai update");
       } else {
         Map<String, Object?> newData = {
           "userId": the_user.id,
@@ -251,23 +256,21 @@ class DbHelper {
       List<Map<String, Object?>> result =
           await db.query(AbsensiUserQuery.TABLE_NAME, where: whereAbsenString);
 
-      if (result.length > 0) {
-        for (var theResult in result) {
-          var newMap = Map.of(theResult);
-          newMap["id"] = newMap["id"].toString();
+      for (var theResult in result) {
+        var newMap = Map.of(theResult);
+        newMap["id"] = newMap["id"].toString();
 
-          var resultUser =
-              await db.query(UserQuery.TABLE_NAME, where: whereUserString);
+        var resultUser =
+            await db.query(UserQuery.TABLE_NAME, where: whereUserString);
 
-          if (resultUser.length > 0) {
-            var newMapUser = Map.of(resultUser[0]);
-            newMapUser["id"] = newMapUser["id"].toString();
-            newMap["theUser"] = newMapUser;
-          }
-          var rowAbsen = AbsensiUser.fromMap(newMap);
-
-          theRespon.add(rowAbsen);
+        if (resultUser.length > 0) {
+          var newMapUser = Map.of(resultUser[0]);
+          newMapUser["id"] = newMapUser["id"].toString();
+          newMap["theUser"] = newMapUser;
         }
+        var rowAbsen = AbsensiUser.fromMap(newMap);
+
+        theRespon.add(rowAbsen);
       }
     } catch (error) {
       print("Gagal getListAbsensi " + error.toString());

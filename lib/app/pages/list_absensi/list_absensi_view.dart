@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
+import 'package:keluarmasuk/app/display/InfoAbsensiDisplay.dart';
+import 'package:keluarmasuk/app/utils/constants.dart';
+import 'package:keluarmasuk/domain/entities/FilterAbsensi.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:intl/intl.dart';
 
@@ -26,7 +29,8 @@ import 'package:keluarmasuk/data/repositories/DataAbsensiUserRepository.dart';
 import 'package:keluarmasuk/data/repositories/DataUserRepository.dart';
 
 class list_absensi_view extends View {
-  list_absensi_view();
+  final FilterAbsensi theFilter;
+  list_absensi_view(this.theFilter);
   @override
   list_absensi_viewView createState() =>
       list_absensi_viewView(list_absensi_controller(
@@ -165,7 +169,9 @@ class list_absensi_viewView
                             ),
                             Expanded(
                               child: Text(
-                                "68",
+                                DateFormat(formatTanggal, "id_ID").format(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        widget.theFilter.dateFrom)),
                                 style: TextStyle(
                                   fontSize: 14.0,
                                   fontFamily: "Popins",
@@ -196,7 +202,9 @@ class list_absensi_viewView
                             ),
                             Expanded(
                               child: Text(
-                                "1",
+                                DateFormat(formatTanggal, "id_ID").format(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        widget.theFilter.dateTo)),
                                 style: TextStyle(
                                   fontSize: 14.0,
                                   fontFamily: "Popins",
@@ -237,7 +245,7 @@ class list_absensi_viewView
                             ),
                             Expanded(
                               child: Text(
-                                "69",
+                                "${controller.absensi_list.length}",
                                 style: TextStyle(
                                   fontSize: 20.0,
                                   fontFamily: "Popins",
@@ -258,7 +266,9 @@ class list_absensi_viewView
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: controller.absensi_list.length,
                     itemBuilder: (buildContext, idx) {
-                      final theAbsensi = controller.absensi_list[idx];
+                      final absensiDisplay =
+                          InfoAbsensiDisplay(controller.absensi_list[idx]);
+
                       return InkWell(
                         onTap: () {
                           // Get.to(detail_klien_view(theInfoKlien.theKlien));
@@ -283,7 +293,7 @@ class list_absensi_viewView
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "${theAbsensi.theUser?.name}",
+                                              "${absensiDisplay.theAbsensi.theUser?.name}",
                                               style: TextStyle(
                                                 fontSize: 16.0,
                                                 fontFamily: "Popins",
@@ -295,7 +305,7 @@ class list_absensi_viewView
                                               children: [
                                                 Expanded(
                                                   child: Text(
-                                                    "${theAbsensi.absenIn}",
+                                                    "${absensiDisplay.labelAbsenIn}",
                                                     style: TextStyle(
                                                       fontSize: 14.0,
                                                       fontFamily: "Popins",
@@ -306,7 +316,7 @@ class list_absensi_viewView
                                                 ),
                                                 Expanded(
                                                   child: Text(
-                                                    "${theAbsensi.absenOut}",
+                                                    "${absensiDisplay.labelAbsenOut}",
                                                     style: TextStyle(
                                                       fontSize: 14.0,
                                                       fontFamily: "Popins",

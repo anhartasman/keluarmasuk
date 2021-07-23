@@ -7,6 +7,7 @@ import 'package:intro_slider/slide_object.dart';
 import 'package:keluarmasuk/UI/BottomNavigationBar.dart';
 import 'package:keluarmasuk/app/pages/list_absensi/list_absensi_view.dart';
 import 'package:keluarmasuk/app/utils/constants.dart';
+import 'package:keluarmasuk/domain/entities/FilterAbsensi.dart';
 import 'package:keluarmasuk/domain/entities/IsiFormAbsensi.dart';
 import 'form_cari_absen_presenter.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,9 @@ class form_cari_absen_controller extends Controller {
   }
 
   void cariAbsensi() {
-    Get.to(list_absensi_view());
+    Get.to(list_absensi_view(FilterAbsensi(
+        dateFrom: dateFrom.millisecondsSinceEpoch,
+        dateTo: dateTo.millisecondsSinceEpoch)));
   }
 
   void cariDateFrom() {
