@@ -179,93 +179,63 @@ class home_user_viewView extends ViewState<home_user_view, home_user_controller>
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      Stack(
-                        alignment: AlignmentDirectional.topStart,
-                        children: [
-                          Positioned.fill(
-                            child: FractionallySizedBox(
-                              alignment: Alignment.topLeft,
-                              widthFactor: 0.25,
-                              heightFactor: 1,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Warna.warnaUtama,
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.horizontal(
-                                    right: Radius.circular(25.0),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20.0),
+                              child: Text(
+                                "Menu",
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontFamily: "Popins",
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 5),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          Get.to(form_absensi_view());
+                                        },
+                                        child: _menuHome(
+                                          title: "Absensi",
+                                          subTitle: "pendataan keluar masuk",
+                                          menuIcon: FontAwesomeIcons.edit,
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Get.to(form_cari_absen_view());
+                                        },
+                                        child: _menuHome(
+                                          title: "Data Absensi",
+                                          subTitle: "Lihat daftar keluar masuk",
+                                          menuIcon: FontAwesomeIcons.book,
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: controller.prosesLogout,
+                                        child: _menuHome(
+                                          title: "Logout",
+                                          subTitle: "Kembali ke login",
+                                          menuIcon: FontAwesomeIcons.doorOpen,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 15.0,
-                              vertical: 25,
-                            ),
-                            child: Column(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    Get.to(form_absensi_view());
-                                  },
-                                  child: _menuHome(
-                                    title: "Absensi",
-                                    subTitle: "pendataan keluar masuk",
-                                    menuIcon: FontAwesomeIcons.edit,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 15.0),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Get.to(form_cari_absen_view());
-                                    },
-                                    child: _menuHome(
-                                      title: "Data Absensi",
-                                      subTitle: "Lihat daftar keluar masuk",
-                                      menuIcon: FontAwesomeIcons.book,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 50.0,
-                          left: 20,
-                          right: 20,
-                        ),
-                        child: InkWell(
-                          onTap: controller.prosesLogout,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Warna.warnaUtama,
-                              borderRadius: new BorderRadius.circular(25.0),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Text(
-                                    "Logout",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontFamily: "Poppins",
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          ],
                         ),
                       ),
                     ],
@@ -296,105 +266,68 @@ class _menuHome extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: AlignmentDirectional.centerStart,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 30.0),
-          child: Stack(
-            alignment: AlignmentDirectional.centerEnd,
-            children: [
+    return Padding(
+      padding: const EdgeInsets.only(right: 15.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 4.5,
+              spreadRadius: 2.0,
+              offset: Offset(
+                0,
+                0,
+              ),
+            )
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10.0,
+            vertical: 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(right: 15.0),
+                padding: const EdgeInsets.only(bottom: 10.0),
                 child: Container(
-                  width: double.infinity,
+                  width: 40,
+                  height: 40,
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.horizontal(
-                        left: Radius.circular(25.0),
-                        right: Radius.circular(8.0),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 4.5,
-                          spreadRadius: 1.0,
-                          offset: Offset(
-                            5,
-                            5,
-                          ),
-                        )
-                      ]),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40.0,
-                      vertical: 20,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "${title}",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontFamily: "Popins",
-                            color: Warna.warnaCoklat,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          "${subTitle}",
-                          style: TextStyle(
-                            fontSize: 12.0,
-                            fontFamily: "Popins",
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
-                    ),
+                    shape: BoxShape.circle,
+                    color: Warna.warnaCoklat,
+                  ),
+                  child: Center(
+                    child: FaIcon(menuIcon, size: 20, color: Warna.warnaKuning),
                   ),
                 ),
               ),
-              Container(
-                height: 30.0,
-                width: 30.0,
-                alignment: AlignmentDirectional.center,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 1,
-                        spreadRadius: 1.0,
-                        offset: Offset(
-                          1.0,
-                          2.0,
-                        ),
-                      )
-                    ]),
-                child: FaIcon(
-                  FontAwesomeIcons.chevronRight,
-                  size: 12,
-                  color: Colors.orange,
+              Text(
+                "${title}",
+                style: TextStyle(
+                  fontSize: 14.0,
+                  fontFamily: "Popins",
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "${subTitle}",
+                style: TextStyle(
+                  fontSize: 12.0,
+                  fontFamily: "Popins",
+                  color: Colors.grey,
                 ),
               ),
             ],
           ),
         ),
-        Container(
-          width: 60,
-          height: 60,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Warna.warnaCoklat,
-          ),
-          child: Center(
-            child: FaIcon(menuIcon, size: 30, color: Warna.warnaKuning),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
