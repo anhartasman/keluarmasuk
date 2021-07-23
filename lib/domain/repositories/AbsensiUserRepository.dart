@@ -7,5 +7,6 @@ import 'package:keluarmasuk/domain/entities/UserAplikasi.dart';
 abstract class AbsensiUserRepository {
   Future<List<AbsensiUser>> getAbsensiUserList(UserAplikasi the_user);
   Future<ResponGlobal<AbsensiUser>> getCurrentAbsensi(UserAplikasi the_user);
-  Future<Respon> insertData(UserAplikasi the_user,IsiFormAbsensi isiForm);
+  Future<Respon> insertData(UserAplikasi the_user, IsiFormAbsensi isiForm);
+  Future<Respon> toggleAbsen(UserAplikasi the_user);
 }

@@ -89,6 +89,43 @@ class DbHelper {
     return theRespon;
   }
 
+  Future<Respon> toggleAbsen(UserAplikasi the_user) async {
+    final db = await openDB();
+
+    String whereString = 'sedanngIn = 1 AND userId = ${the_user.id}';
+
+    List<Map<String, Object?>> result =
+        await db.query(AbsensiUserQuery.TABLE_NAME, where: whereString);
+    bool dapatIn = false;
+    String absenId = "";
+    if (result.length > 0) {
+      dapatIn = true;
+      absenId = result[0]["id"] as String;
+    }
+    final waktuSekarang = DateTime.now();
+
+    var theRespon = new Respon();
+
+    if (dapatIn) {
+      var oldResult = result[0];
+      oldResult["sedangIn"] = 0;
+      oldResult["absenOut"] = waktuSekarang.millisecondsSinceEpoch;
+      await db.update(AbsensiUserQuery.TABLE_NAME, oldResult,
+          where: whereString);
+    } else {
+      Map<String, Object?> newData = {
+        "userId": the_user.id,
+        "absenIn": waktuSekarang.millisecondsSinceEpoch,
+        "absenOut": null,
+        "sedangIn": 1
+      };
+      await db.insert(AbsensiUserQuery.TABLE_NAME, newData,
+          conflictAlgorithm: ConflictAlgorithm.replace);
+    }
+
+    return theRespon;
+  }
+
   Future<ResponGlobal<UserAplikasi>> login(
       String email, String password) async {
     final db = await openDB();

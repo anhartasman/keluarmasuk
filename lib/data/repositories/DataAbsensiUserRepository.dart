@@ -38,4 +38,10 @@ class DataAbsensiUserRepository implements AbsensiUserRepository {
     final theRespon = _helper.insertAbsensiUser(isiForm);
     return Future.value(theRespon);
   }
+
+  Future<Respon> toggleAbsen(UserAplikasi the_user) async {
+    final DbHelper _helper = new DbHelper();
+    final theRespon = _helper.toggleAbsen(the_user);
+    return Future.value(theRespon);
+  }
 }

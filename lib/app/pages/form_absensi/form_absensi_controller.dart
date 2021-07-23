@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intro_slider/slide_object.dart';
+import 'package:keluarmasuk/app/pages/utils/TampilanDialog.dart';
 import 'package:keluarmasuk/domain/entities/AbsensiUser.dart';
 import 'package:keluarmasuk/domain/entities/IsiFormAbsensi.dart';
 import 'package:keluarmasuk/domain/entities/Respon.dart';
@@ -17,22 +18,22 @@ import 'package:place_picker/place_picker.dart';
 import 'form_absensi_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-//auto_darttecture_import_usecase_InsertAbsensiUserUseCase
+//auto_darttecture_import_usecase_ToggleAbsensiUserUseCase
 //auto_darttecture_import_usecase_GetCurrentAbsensiUserUseCase
 import 'package:keluarmasuk/domain/repositories/UserRepository.dart';
 
 class form_absensi_controller extends Controller {
   form_absensi_presenter _form_absensi_presenter;
   //auto_darttecture_class_var_declaration
-//startControllerUseCaseVarDeclarationForInsertAbsensiUserUseCase
-  late Function(String errorMessageByUseCaseInsertAbsensiUserUseCase)
-      tambahan_callInsertAbsensiUserUseCaseOnError;
-  late Function(Respon) tambahan_callInsertAbsensiUserUseCaseOnNext;
-  late Function tambahan_callInsertAbsensiUserUseCaseOnComplete;
-  var StartedUseCaseInsertAbsensiUserUseCase = false;
-  var StatusByUseCaseInsertAbsensiUserUseCase = "idle";
-  var MessageByUseCaseInsertAbsensiUserUseCase = "";
-//endControllerUseCaseVarDeclarationForInsertAbsensiUserUseCase
+//startControllerUseCaseVarDeclarationForToggleAbsensiUserUseCase
+  late Function(String errorMessageByUseCaseToggleAbsensiUserUseCase)
+      tambahan_callToggleAbsensiUserUseCaseOnError;
+  late Function(Respon) tambahan_callToggleAbsensiUserUseCaseOnNext;
+  late Function tambahan_callToggleAbsensiUserUseCaseOnComplete;
+  var StartedUseCaseToggleAbsensiUserUseCase = false;
+  var StatusByUseCaseToggleAbsensiUserUseCase = "idle";
+  var MessageByUseCaseToggleAbsensiUserUseCase = "";
+//endControllerUseCaseVarDeclarationForToggleAbsensiUserUseCase
 //startControllerUseCaseVarDeclarationForGetCurrentAbsensiUserUseCase
   late Function(String errorMessageByUseCaseGetCurrentAbsensiUserUseCase)
       tambahan_callGetCurrentAbsensiUserUseCaseOnError;
@@ -91,21 +92,34 @@ class form_absensi_controller extends Controller {
   }
 
   final formKey = GlobalKey<FormBuilderState>();
-  void prosesAbsen() {}
+  void prosesAbsen() {
+    startLoading();
+    callToggleAbsensiUserUseCase(
+        onNext: (theRespon) {
+          TampilanDialog.showDialogPesanAlert("Berhasil", "Absen tercatat",
+                  the_icon: TemaIkonDialog.succcess)
+              .then((value) {
+            Get.back();
+          });
+        },
+        onComplete: stopLoading,
+        onError: (_) => stopLoading());
+  }
+
   String labelTanggal = "";
   @override
   void initListeners() {
     //use_case_initListener
-//startPresenterListenerOnUseCaseInsertAbsensiUserUseCase
-    _form_absensi_presenter.ListenUseCaseInsertAbsensiUserUseCaseOnNext =
+//startPresenterListenerOnUseCaseToggleAbsensiUserUseCase
+    _form_absensi_presenter.ListenUseCaseToggleAbsensiUserUseCaseOnNext =
         (Respon the_value) {
-      this.ListenUseCaseInsertAbsensiUserUseCaseOnNext(the_value);
+      this.ListenUseCaseToggleAbsensiUserUseCaseOnNext(the_value);
     };
-    _form_absensi_presenter.ListenUseCaseInsertAbsensiUserUseCaseOnError =
-        this.ListenUseCaseInsertAbsensiUserUseCaseOnError;
-    _form_absensi_presenter.ListenUseCaseInsertAbsensiUserUseCaseOnComplete =
-        this.ListenUseCaseInsertAbsensiUserUseCaseOnComplete;
-//stopPresenterListenerOnUseCaseInsertAbsensiUserUseCase
+    _form_absensi_presenter.ListenUseCaseToggleAbsensiUserUseCaseOnError =
+        this.ListenUseCaseToggleAbsensiUserUseCaseOnError;
+    _form_absensi_presenter.ListenUseCaseToggleAbsensiUserUseCaseOnComplete =
+        this.ListenUseCaseToggleAbsensiUserUseCaseOnComplete;
+//stopPresenterListenerOnUseCaseToggleAbsensiUserUseCase
 
 //startPresenterListenerOnUseCaseGetCurrentAbsensiUserUseCase
     _form_absensi_presenter.ListenUseCaseGetCurrentAbsensiUserUseCaseOnNext =
@@ -125,80 +139,79 @@ class form_absensi_controller extends Controller {
   void dispose() => _form_absensi_presenter.dispose();
 
 //auto_darttecture_class_body
-//startControllerCallUseCaseInsertAbsensiUserUseCase
-  static defaultFuncONNextInsertAbsensiUserUseCase(Respon theValue) {}
-  static defaultFuncONErrorInsertAbsensiUserUseCase(String errorMessage) {}
-  static defaultFuncONCompleteInsertAbsensiUserUseCase() {}
-  void callInsertAbsensiUserUseCase(
-      {required IsiFormAbsensi isiForm,
-      Function(Respon) onNext = defaultFuncONNextInsertAbsensiUserUseCase,
-      Function(String errorMessageByUseCaseInsertAbsensiUserUseCase) onError =
-          defaultFuncONErrorInsertAbsensiUserUseCase,
+//startControllerCallUseCaseToggleAbsensiUserUseCase
+  static defaultFuncONNextToggleAbsensiUserUseCase(Respon theValue) {}
+  static defaultFuncONErrorToggleAbsensiUserUseCase(String errorMessage) {}
+  static defaultFuncONCompleteToggleAbsensiUserUseCase() {}
+  void callToggleAbsensiUserUseCase(
+      {Function(Respon) onNext = defaultFuncONNextToggleAbsensiUserUseCase,
+      Function(String errorMessageByUseCaseToggleAbsensiUserUseCase) onError =
+          defaultFuncONErrorToggleAbsensiUserUseCase,
       Function onComplete =
-          defaultFuncONCompleteInsertAbsensiUserUseCase}) async {
-    tambahan_callInsertAbsensiUserUseCaseOnNext = onNext;
-    tambahan_callInsertAbsensiUserUseCaseOnError = onError;
-    tambahan_callInsertAbsensiUserUseCaseOnComplete = onComplete;
-    StatusByUseCaseInsertAbsensiUserUseCase = "ongoing";
-    StartedUseCaseInsertAbsensiUserUseCase = true;
+          defaultFuncONCompleteToggleAbsensiUserUseCase}) async {
+    tambahan_callToggleAbsensiUserUseCaseOnNext = onNext;
+    tambahan_callToggleAbsensiUserUseCaseOnError = onError;
+    tambahan_callToggleAbsensiUserUseCaseOnComplete = onComplete;
+    StatusByUseCaseToggleAbsensiUserUseCase = "ongoing";
+    StartedUseCaseToggleAbsensiUserUseCase = true;
     //showLoading();
     // so the animation can be seen
-    print("controller try callInsertAbsensiUserUseCase");
+    print("controller try callToggleAbsensiUserUseCase");
     Future.delayed(Duration(seconds: 0),
-        () => _form_absensi_presenter.callInsertAbsensiUserUseCase(isiForm));
+        () => _form_absensi_presenter.callToggleAbsensiUserUseCase());
   }
 
-//endControllerCallUseCaseInsertAbsensiUserUseCase
-//startListenerOnUseCaseInsertAbsensiUserUseCase
-  void ListenUseCaseInsertAbsensiUserUseCaseOnNext(Respon the_value) {
-    //get called when usecase InsertAbsensiUserUseCase return value
+//endControllerCallUseCaseToggleAbsensiUserUseCase
+//startListenerOnUseCaseToggleAbsensiUserUseCase
+  void ListenUseCaseToggleAbsensiUserUseCaseOnNext(Respon the_value) {
+    //get called when usecase ToggleAbsensiUserUseCase return value
     //dismissLoading();
-    StatusByUseCaseInsertAbsensiUserUseCase = "onnext";
-//startDefaultFunctionOnListenUseCaseInsertAbsensiUserUseCaseOnNext
-//endDefaultFunctionOnListenUseCaseInsertAbsensiUserUseCaseOnNext
-    if (tambahan_callInsertAbsensiUserUseCaseOnNext != null) {
-//Future.delayed(Duration(seconds: 0), ()=>tambahan_callInsertAbsensiUserUseCaseOnNext());
-      tambahan_callInsertAbsensiUserUseCaseOnNext(the_value);
+    StatusByUseCaseToggleAbsensiUserUseCase = "onnext";
+//startDefaultFunctionOnListenUseCaseToggleAbsensiUserUseCaseOnNext
+//endDefaultFunctionOnListenUseCaseToggleAbsensiUserUseCaseOnNext
+    if (tambahan_callToggleAbsensiUserUseCaseOnNext != null) {
+//Future.delayed(Duration(seconds: 0), ()=>tambahan_callToggleAbsensiUserUseCaseOnNext());
+      tambahan_callToggleAbsensiUserUseCaseOnNext(the_value);
     }
     //
     //print("dapat layanan : " + the_categories.length.toString());
     //refreshUI();
   }
 
-  void ListenUseCaseInsertAbsensiUserUseCaseOnError(e) {
-    StatusByUseCaseInsertAbsensiUserUseCase = "onerror";
-    MessageByUseCaseInsertAbsensiUserUseCase = e.toString();
-    //get called when usecase InsertAbsensiUserUseCase return error
+  void ListenUseCaseToggleAbsensiUserUseCaseOnError(e) {
+    StatusByUseCaseToggleAbsensiUserUseCase = "onerror";
+    MessageByUseCaseToggleAbsensiUserUseCase = e.toString();
+    //get called when usecase ToggleAbsensiUserUseCase return error
     //dismissLoading();
     //showGenericSnackbar(getStateKey(), e.message, isError: true);
-//startDefaultFunctionOnListenUseCaseInsertAbsensiUserUseCaseOnError
-//endDefaultFunctionOnListenUseCaseInsertAbsensiUserUseCaseOnError
-    if (tambahan_callInsertAbsensiUserUseCaseOnError != null) {
-//Future.delayed(Duration(seconds: 0), ()=>tambahan_callInsertAbsensiUserUseCaseonError());
-      tambahan_callInsertAbsensiUserUseCaseOnError(e);
+//startDefaultFunctionOnListenUseCaseToggleAbsensiUserUseCaseOnError
+//endDefaultFunctionOnListenUseCaseToggleAbsensiUserUseCaseOnError
+    if (tambahan_callToggleAbsensiUserUseCaseOnError != null) {
+//Future.delayed(Duration(seconds: 0), ()=>tambahan_callToggleAbsensiUserUseCaseonError());
+      tambahan_callToggleAbsensiUserUseCaseOnError(e);
     }
     //layanan_list = null;
-    print("dapat error dari InsertAbsensiUserUseCase");
+    print("dapat error dari ToggleAbsensiUserUseCase");
     //refreshUI();
   }
 
-  void ListenUseCaseInsertAbsensiUserUseCaseOnComplete() {
-    StatusByUseCaseInsertAbsensiUserUseCase = "oncomplete";
-    //get called when usecase InsertAbsensiUserUseCase return error
+  void ListenUseCaseToggleAbsensiUserUseCaseOnComplete() {
+    StatusByUseCaseToggleAbsensiUserUseCase = "oncomplete";
+    //get called when usecase ToggleAbsensiUserUseCase return error
     //dismissLoading();
     //showGenericSnackbar(getStateKey(), e.message, isError: true);
-//startDefaultFunctionOnListenUseCaseInsertAbsensiUserUseCaseOnComplete
-//endDefaultFunctionOnListenUseCaseInsertAbsensiUserUseCaseOnComplete
-    if (tambahan_callInsertAbsensiUserUseCaseOnComplete != null) {
-//Future.delayed(Duration(seconds: 0), ()=>tambahan_callInsertAbsensiUserUseCaseonComplete());
-      tambahan_callInsertAbsensiUserUseCaseOnComplete();
+//startDefaultFunctionOnListenUseCaseToggleAbsensiUserUseCaseOnComplete
+//endDefaultFunctionOnListenUseCaseToggleAbsensiUserUseCaseOnComplete
+    if (tambahan_callToggleAbsensiUserUseCaseOnComplete != null) {
+//Future.delayed(Duration(seconds: 0), ()=>tambahan_callToggleAbsensiUserUseCaseonComplete());
+      tambahan_callToggleAbsensiUserUseCaseOnComplete();
     }
     //layanan_list = null;
-    print("dapat oncomplete dari InsertAbsensiUserUseCase");
+    print("dapat oncomplete dari ToggleAbsensiUserUseCase");
     //refreshUI();
   }
 
-//stopListenerOnUseCaseInsertAbsensiUserUseCase
+//stopListenerOnUseCaseToggleAbsensiUserUseCase
 //startControllerCallUseCaseGetCurrentAbsensiUserUseCase
   static defaultFuncONNextGetCurrentAbsensiUserUseCase(AbsensiUser theValue) {}
   static defaultFuncONErrorGetCurrentAbsensiUserUseCase(String errorMessage) {}
