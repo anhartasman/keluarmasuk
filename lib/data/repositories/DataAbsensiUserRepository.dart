@@ -18,24 +18,24 @@ import '../DbHelper.dart';
 class DataAbsensiUserRepository implements AbsensiUserRepository {
   Future<ResponGlobal<AbsensiUser>> getCurrentAbsensi(
       UserAplikasi the_user) async {
-final DbHelper _helper = new DbHelper();
-final theRespon = _helper.getCurrentAbsensi(the_user);
+    final DbHelper _helper = new DbHelper();
+    final theRespon = _helper.getCurrentAbsensi(the_user);
 
     return Future.value(theRespon);
   }
-  Future<List<AbsensiUser>> getAbsensiUserList(
-      UserAplikasi the_user) async {
-    //return Future.value(kContacts);
-    List<AbsensiUser> theRespon = [];
+
+  Future<List<AbsensiUser>> getAbsensiUserList(UserAplikasi the_user) async {
+    final DbHelper _helper = new DbHelper();
+    List<AbsensiUser> theRespon = await _helper.getListAbsensi(the_user);
 
     return Future.value(theRespon);
   }
+
   Future<Respon> insertData(
-      UserAplikasi the_user,IsiFormAbsensi isiForm) async {
-  
-    isiForm.userId=the_user.id;
-final DbHelper _helper = new DbHelper();
-final theRespon = _helper.insertAbsensiUser(isiForm);
+      UserAplikasi the_user, IsiFormAbsensi isiForm) async {
+    isiForm.userId = the_user.id;
+    final DbHelper _helper = new DbHelper();
+    final theRespon = _helper.insertAbsensiUser(isiForm);
     return Future.value(theRespon);
   }
 }

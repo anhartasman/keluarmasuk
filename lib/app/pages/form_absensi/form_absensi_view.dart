@@ -85,7 +85,8 @@ class form_absensi_viewView
                     CircleProgress(
                         screen_width: 300,
                         max_progress: 2,
-                        current_progress: 1),
+                        current_progress:
+                            controller.currentAbsensi == null ? 1 : 2),
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0, bottom: 10),
                       child: Text(
