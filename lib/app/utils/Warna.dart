@@ -10,4 +10,6 @@ class Warna {
   static const Color warnaKuning = Color(0xFFf9d10a);
   static const Color warnaOrange = Color(0xFFfc6011);
   static const Color warnaPinkMuda = Color(0xFFf7dada);
+  static const Color warnaBiru = Color(0xFF0a97b0);
+  static const Color warnaHijau = Color(0xFF46b5a7);
 }

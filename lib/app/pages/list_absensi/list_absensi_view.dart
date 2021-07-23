@@ -34,6 +34,7 @@ class list_absensi_view extends View {
   @override
   list_absensi_viewView createState() =>
       list_absensi_viewView(list_absensi_controller(
+        theFilter,
         new DataAbsensiUserRepository(),
         new DataUserRepository(),
       ));

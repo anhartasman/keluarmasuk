@@ -20,6 +20,7 @@ import 'home_user_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //auto_darttecture_import_usecase_UserLogoutUseCase
+//auto_darttecture_import_usecase_GetCurrentUserUseCase
 import 'package:keluarmasuk/domain/repositories/UserRepository.dart';
 
 class home_user_controller extends Controller {
@@ -34,6 +35,15 @@ class home_user_controller extends Controller {
   var StatusByUseCaseUserLogoutUseCase = "idle";
   var MessageByUseCaseUserLogoutUseCase = "";
 //endControllerUseCaseVarDeclarationForUserLogoutUseCase
+  //startControllerUseCaseVarDeclarationForGetCurrentUserUseCase
+  late Function(String errorMessageByUseCaseGetCurrentUserUseCase)
+      tambahan_callGetCurrentUserUseCaseOnError;
+  late Function(UserAplikasi) tambahan_callGetCurrentUserUseCaseOnNext;
+  late Function tambahan_callGetCurrentUserUseCaseOnComplete;
+  var StartedUseCaseGetCurrentUserUseCase = false;
+  var StatusByUseCaseGetCurrentUserUseCase = "idle";
+  var MessageByUseCaseGetCurrentUserUseCase = "";
+//endControllerUseCaseVarDeclarationForGetCurrentUserUseCase
   home_user_controller(
     UserRepository _UserRepository,
   ) : _home_user_presenter = home_user_presenter(
@@ -44,11 +54,15 @@ class home_user_controller extends Controller {
     initListeners();
   }
 
+  late UserAplikasi theUser;
+
   @override
   void onInitState() {
-    Future.delayed(Duration(seconds: 1), () {
-      stopLoading();
-    });
+    callGetCurrentUserUseCase(
+        onNext: (user) {
+          theUser = user;
+        },
+        onComplete: stopLoading);
   }
 
   bool onLoading = true;
@@ -77,6 +91,16 @@ class home_user_controller extends Controller {
     _home_user_presenter.ListenUseCaseUserLogoutUseCaseOnComplete =
         this.ListenUseCaseUserLogoutUseCaseOnComplete;
 //stopPresenterListenerOnUseCaseUserLogoutUseCase
+//startPresenterListenerOnUseCaseGetCurrentUserUseCase
+    _home_user_presenter.ListenUseCaseGetCurrentUserUseCaseOnNext =
+        (UserAplikasi the_value) {
+      this.ListenUseCaseGetCurrentUserUseCaseOnNext(the_value);
+    };
+    _home_user_presenter.ListenUseCaseGetCurrentUserUseCaseOnError =
+        this.ListenUseCaseGetCurrentUserUseCaseOnError;
+    _home_user_presenter.ListenUseCaseGetCurrentUserUseCaseOnComplete =
+        this.ListenUseCaseGetCurrentUserUseCaseOnComplete;
+//stopPresenterListenerOnUseCaseGetCurrentUserUseCase
   }
 
   BuildContext? dialogContext;
@@ -159,6 +183,78 @@ class home_user_controller extends Controller {
     print("dapat oncomplete dari UserLogoutUseCase");
     //refreshUI();
   }
+
 //stopListenerOnUseCaseUserLogoutUseCase
+//startControllerCallUseCaseGetCurrentUserUseCase
+  static defaultFuncONNextGetCurrentUserUseCase(UserAplikasi theValue) {}
+  static defaultFuncONErrorGetCurrentUserUseCase(String errorMessage) {}
+  static defaultFuncONCompleteGetCurrentUserUseCase() {}
+  void callGetCurrentUserUseCase(
+      {Function(UserAplikasi) onNext = defaultFuncONNextGetCurrentUserUseCase,
+      Function(String errorMessageByUseCaseGetCurrentUserUseCase) onError =
+          defaultFuncONErrorGetCurrentUserUseCase,
+      Function onComplete = defaultFuncONCompleteGetCurrentUserUseCase}) async {
+    tambahan_callGetCurrentUserUseCaseOnNext = onNext;
+    tambahan_callGetCurrentUserUseCaseOnError = onError;
+    tambahan_callGetCurrentUserUseCaseOnComplete = onComplete;
+    StatusByUseCaseGetCurrentUserUseCase = "ongoing";
+    StartedUseCaseGetCurrentUserUseCase = true;
+    //showLoading();
+    // so the animation can be seen
+    print("controller try callGetCurrentUserUseCase");
+    Future.delayed(Duration(seconds: 0),
+        () => _home_user_presenter.callGetCurrentUserUseCase());
+  }
+
+//endControllerCallUseCaseGetCurrentUserUseCase
+//startListenerOnUseCaseGetCurrentUserUseCase
+  void ListenUseCaseGetCurrentUserUseCaseOnNext(UserAplikasi the_value) {
+    //get called when usecase GetCurrentUserUseCase return value
+    //dismissLoading();
+    StatusByUseCaseGetCurrentUserUseCase = "onnext";
+//startDefaultFunctionOnListenUseCaseGetCurrentUserUseCaseOnNext
+//endDefaultFunctionOnListenUseCaseGetCurrentUserUseCaseOnNext
+    if (tambahan_callGetCurrentUserUseCaseOnNext != null) {
+//Future.delayed(Duration(seconds: 0), ()=>tambahan_callGetCurrentUserUseCaseOnNext());
+      tambahan_callGetCurrentUserUseCaseOnNext(the_value);
+    }
+    //
+    //print("dapat layanan : " + the_categories.length.toString());
+    //refreshUI();
+  }
+
+  void ListenUseCaseGetCurrentUserUseCaseOnError(e) {
+    StatusByUseCaseGetCurrentUserUseCase = "onerror";
+    MessageByUseCaseGetCurrentUserUseCase = e.toString();
+    //get called when usecase GetCurrentUserUseCase return error
+    //dismissLoading();
+    //showGenericSnackbar(getStateKey(), e.message, isError: true);
+//startDefaultFunctionOnListenUseCaseGetCurrentUserUseCaseOnError
+//endDefaultFunctionOnListenUseCaseGetCurrentUserUseCaseOnError
+    if (tambahan_callGetCurrentUserUseCaseOnError != null) {
+//Future.delayed(Duration(seconds: 0), ()=>tambahan_callGetCurrentUserUseCaseonError());
+      tambahan_callGetCurrentUserUseCaseOnError(e);
+    }
+    //layanan_list = null;
+    print("dapat error dari GetCurrentUserUseCase");
+    //refreshUI();
+  }
+
+  void ListenUseCaseGetCurrentUserUseCaseOnComplete() {
+    StatusByUseCaseGetCurrentUserUseCase = "oncomplete";
+    //get called when usecase GetCurrentUserUseCase return error
+    //dismissLoading();
+    //showGenericSnackbar(getStateKey(), e.message, isError: true);
+//startDefaultFunctionOnListenUseCaseGetCurrentUserUseCaseOnComplete
+//endDefaultFunctionOnListenUseCaseGetCurrentUserUseCaseOnComplete
+    if (tambahan_callGetCurrentUserUseCaseOnComplete != null) {
+//Future.delayed(Duration(seconds: 0), ()=>tambahan_callGetCurrentUserUseCaseonComplete());
+      tambahan_callGetCurrentUserUseCaseOnComplete();
+    }
+    //layanan_list = null;
+    print("dapat oncomplete dari GetCurrentUserUseCase");
+    //refreshUI();
+  }
+//stopListenerOnUseCaseGetCurrentUserUseCase
 }
 //auto_darttecture_class_outside

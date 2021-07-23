@@ -1,6 +1,7 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:keluarmasuk/domain/entities/AbsensiUser.dart';
+import 'package:keluarmasuk/domain/entities/FilterAbsensi.dart';
 import 'package:keluarmasuk/domain/repositories/AbsensiUserRepository.dart';
 
 import 'list_absensi_presenter.dart';
@@ -9,9 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 //auto_darttecture_import_usecase_GetAbsensiUserListUseCase
 import 'package:keluarmasuk/domain/repositories/UserRepository.dart';
 
-
 class list_absensi_controller extends Controller {
   list_absensi_presenter _list_absensi_presenter;
+  FilterAbsensi theFilter;
   //auto_darttecture_class_var_declaration
 //startControllerUseCaseVarDeclarationForGetAbsensiUserListUseCase
   late Function(String errorMessageByUseCaseGetAbsensiUserListUseCase)
@@ -23,9 +24,9 @@ class list_absensi_controller extends Controller {
   var MessageByUseCaseGetAbsensiUserListUseCase = "";
 //endControllerUseCaseVarDeclarationForGetAbsensiUserListUseCase
   list_absensi_controller(
+    this.theFilter,
     AbsensiUserRepository _AbsensiUserRepository,
     UserRepository _UserRepository,
-    
   ) : _list_absensi_presenter = list_absensi_presenter(
           _AbsensiUserRepository,
           _UserRepository,
@@ -37,11 +38,14 @@ class list_absensi_controller extends Controller {
   List<AbsensiUser> absensi_list = [];
   @override
   void onInitState() {
-    callGetAbsensiUserListUseCase(onNext: (theAbsensi) {
-      absensi_list.add(theAbsensi);
-    }, onComplete: () {
-      stopLoadingInfoKlien();
-    });
+    callGetAbsensiUserListUseCase(
+        theFilter: theFilter,
+        onNext: (theAbsensi) {
+          absensi_list.add(theAbsensi);
+        },
+        onComplete: () {
+          stopLoadingInfoKlien();
+        });
     Future.delayed(Duration(seconds: 1), () {
       stopLoading();
     });
@@ -92,7 +96,8 @@ class list_absensi_controller extends Controller {
   static defaultFuncONErrorGetAbsensiUserListUseCase(String errorMessage) {}
   static defaultFuncONCompleteGetAbsensiUserListUseCase() {}
   void callGetAbsensiUserListUseCase(
-      {Function(AbsensiUser) onNext = defaultFuncONNextGetAbsensiUserListUseCase,
+      {required FilterAbsensi theFilter,
+      Function(AbsensiUser) onNext = defaultFuncONNextGetAbsensiUserListUseCase,
       Function(String errorMessageByUseCaseGetAbsensiUserListUseCase) onError =
           defaultFuncONErrorGetAbsensiUserListUseCase,
       Function onComplete =
@@ -106,7 +111,7 @@ class list_absensi_controller extends Controller {
     // so the animation can be seen
     print("controller try callGetAbsensiUserListUseCase");
     Future.delayed(Duration(seconds: 0),
-        () => _list_absensi_presenter.callGetAbsensiUserListUseCase());
+        () => _list_absensi_presenter.callGetAbsensiUserListUseCase(theFilter));
   }
 
 //endControllerCallUseCaseGetAbsensiUserListUseCase

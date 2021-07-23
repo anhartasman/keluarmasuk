@@ -69,11 +69,113 @@ class home_user_viewView extends ViewState<home_user_view, home_user_controller>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Home",
+                              "Halo, ${controller.theUser.name}!",
                               style: TextStyle(
                                 fontSize: 20.0,
                                 fontFamily: "Popins",
                                 color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "Jangan lupa catat absensi mu",
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontFamily: "Popins",
+                                color: Colors.grey,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 15.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Warna.warnaBiru,
+                                          shape: BoxShape.rectangle,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(25.0)),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 20.0,
+                                            vertical: 20,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                "Data Absen hari ini",
+                                                style: TextStyle(
+                                                  fontSize: 14.0,
+                                                  fontFamily: "Popins",
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              Text(
+                                                "3",
+                                                style: TextStyle(
+                                                  fontSize: 16.0,
+                                                  fontFamily: "Popins",
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 15.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Warna.warnaHijau,
+                                          shape: BoxShape.rectangle,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(25.0)),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 20.0,
+                                            vertical: 20,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                "Data Absen bulan ini",
+                                                style: TextStyle(
+                                                  fontSize: 14.0,
+                                                  fontFamily: "Popins",
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              Text(
+                                                "3",
+                                                style: TextStyle(
+                                                  fontSize: 16.0,
+                                                  fontFamily: "Popins",
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],

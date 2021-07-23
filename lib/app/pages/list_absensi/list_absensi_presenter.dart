@@ -1,6 +1,7 @@
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:flutter/foundation.dart';
 import 'package:keluarmasuk/domain/entities/AbsensiUser.dart';
+import 'package:keluarmasuk/domain/entities/FilterAbsensi.dart';
 import 'package:keluarmasuk/domain/repositories/AbsensiUserRepository.dart';
 import 'package:keluarmasuk/domain/repositories/UserRepository.dart';
 
@@ -22,8 +23,8 @@ class list_absensi_presenter extends Presenter {
   ) {
     //auto_darttecture_usecase_initialize_repo
 //start_usecase_initialize_repo_forGetAbsensiUserListUseCase
-    _GetAbsensiUserListUseCase = GetAbsensiUserListUseCase(
-        _AbsensiUserRepository, _UserRepository);
+    _GetAbsensiUserListUseCase =
+        GetAbsensiUserListUseCase(_AbsensiUserRepository, _UserRepository);
 //end_usecase_initialize_repo_forGetAbsensiUserListUseCase
   }
   void dispose() {
@@ -33,10 +34,11 @@ class list_absensi_presenter extends Presenter {
 
 //auto_darttecture_class_body
 //startFunctionCallGetAbsensiUserListUseCase
-  void callGetAbsensiUserListUseCase() {
+  void callGetAbsensiUserListUseCase(FilterAbsensi theFilter) {
     print("eksekusi GetAbsensiUserListUseCase");
-    _GetAbsensiUserListUseCase?.execute(_GetAbsensiUserListUseCaseObserver(this),
-        GetAbsensiUserListUseCaseParams());
+    _GetAbsensiUserListUseCase?.execute(
+        _GetAbsensiUserListUseCaseObserver(this),
+        GetAbsensiUserListUseCaseParams(theFilter));
   }
 //stopFunctionCallGetAbsensiUserListUseCase
 }
@@ -60,9 +62,11 @@ class _GetAbsensiUserListUseCaseObserver implements Observer<AbsensiUser> {
   /// Login is successfull, trigger event in [LoginController]
   void onComplete() {
     // any cleaning or preparation goes here
-    if (_list_absensi_presenter.ListenUseCaseGetAbsensiUserListUseCaseOnComplete !=
+    if (_list_absensi_presenter
+            .ListenUseCaseGetAbsensiUserListUseCaseOnComplete !=
         null) {
-      _list_absensi_presenter.ListenUseCaseGetAbsensiUserListUseCaseOnComplete();
+      _list_absensi_presenter
+          .ListenUseCaseGetAbsensiUserListUseCaseOnComplete();
     }
   }
 

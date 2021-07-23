@@ -1,7 +1,7 @@
+import 'package:keluarmasuk/domain/entities/FilterAbsensi.dart';
 import 'package:keluarmasuk/domain/entities/ResponGlobal.dart';
 
 import 'package:keluarmasuk/domain/entities/ViewUserSetting.dart';
-
 
 import 'package:keluarmasuk/domain/repositories/UserRepository.dart';
 
@@ -16,9 +16,12 @@ import 'dart:async';
 class GetAbsensiUserListUseCase
     extends CompletableUseCase<GetAbsensiUserListUseCaseParams> {
   AbsensiUserRepository _AbsensiUserRepository;
-  
+
   UserRepository _UserRepository;
-  GetAbsensiUserListUseCase(this._AbsensiUserRepository, this._UserRepository,);
+  GetAbsensiUserListUseCase(
+    this._AbsensiUserRepository,
+    this._UserRepository,
+  );
 
   @override
   Future<Stream<AbsensiUser>> buildUseCaseStream(
@@ -32,7 +35,8 @@ class GetAbsensiUserListUseCase
       }
       var the_current_user = respon_current_user.the_respon;
 
-      _AbsensiUserRepository.getAbsensiUserList(the_current_user!)
+      _AbsensiUserRepository.getAbsensiUserList(
+              the_current_user!, params!.theFilter)
           .then((rumah_list) {
         print("get " + rumah_list.length.toString() + " AbsensiUser");
 
@@ -52,5 +56,6 @@ class GetAbsensiUserListUseCase
 }
 
 class GetAbsensiUserListUseCaseParams {
-  GetAbsensiUserListUseCaseParams();
+  FilterAbsensi theFilter;
+  GetAbsensiUserListUseCaseParams(this.theFilter);
 }

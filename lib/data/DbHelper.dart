@@ -1,4 +1,5 @@
 import 'package:keluarmasuk/domain/entities/AbsensiUser.dart';
+import 'package:keluarmasuk/domain/entities/FilterAbsensi.dart';
 import 'package:keluarmasuk/domain/entities/IsiFormAbsensi.dart';
 import 'package:keluarmasuk/domain/entities/Respon.dart';
 import 'package:keluarmasuk/domain/entities/ResponGlobal.dart';
@@ -246,11 +247,13 @@ class DbHelper {
     return theRespon;
   }
 
-  Future<List<AbsensiUser>> getListAbsensi(UserAplikasi the_user) async {
+  Future<List<AbsensiUser>> getListAbsensi(
+      UserAplikasi the_user, FilterAbsensi theFilter) async {
     final db = await openDB();
     List<AbsensiUser> theRespon = [];
     try {
-      String whereAbsenString = 'userId = ${the_user.id}';
+      String whereAbsenString =
+          'userId = ${the_user.id} AND absenIn >= ${theFilter.dateFrom} AND absenIn <= ${theFilter.dateTo}';
       String whereUserString = 'id = ${the_user.id}';
 
       List<Map<String, Object?>> result =
