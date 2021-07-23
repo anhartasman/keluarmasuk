@@ -22,28 +22,20 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:keluarmasuk/data/repositories/DataAbsensiUserRepository.dart';
 import 'package:keluarmasuk/data/repositories/DataUserRepository.dart';
 
-
 class form_absensi_view extends View {
   form_absensi_view();
   @override
   form_absensi_viewView createState() =>
-      form_absensi_viewView(
-          form_absensi_controller(
+      form_absensi_viewView(form_absensi_controller(
         new DataAbsensiUserRepository(),
         new DataUserRepository(),
-        
       ));
 }
 
-class form_absensi_viewView extends ViewState<
-        form_absensi_view,
-        form_absensi_controller>
-    with
-        TickerProviderStateMixin,
-        AfterLayoutMixin<form_absensi_view> {
-  form_absensi_viewView(
-      form_absensi_controller controller)
-      : super(controller);
+class form_absensi_viewView
+    extends ViewState<form_absensi_view, form_absensi_controller>
+    with TickerProviderStateMixin, AfterLayoutMixin<form_absensi_view> {
+  form_absensi_viewView(form_absensi_controller controller) : super(controller);
   @override
   void initState() {
     super.initState();
@@ -71,9 +63,8 @@ class form_absensi_viewView extends ViewState<
             },
           ),
         ),
-        body:
-            ControlledWidgetBuilder<form_absensi_controller>(
-                builder: (context, controller) {
+        body: ControlledWidgetBuilder<form_absensi_controller>(
+            builder: (context, controller) {
           if (controller.onLoading) {
             return SpinKitWave(
               color: Colors.pink,
@@ -113,29 +104,29 @@ class form_absensi_viewView extends ViewState<
                       thickness: 1,
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Warna.warnaAbu,
-                            borderRadius: new BorderRadius.circular(25.0),
-                          ),
-                          child: new FormBuilderTextField(
-                            name: "labelAbsenIn",
-                            controller: controller.txtCtrlLabelAbsenIn,
-                            decoration: GayaField.abu("Nama Lengkap"),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
-                            ]),
-                            keyboardType: TextInputType.text,
-                            style: new TextStyle(
-                              fontFamily: "Poppins",
-                            ),
+                      padding: const EdgeInsets.only(top: 25.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Warna.warnaAbu,
+                          borderRadius: new BorderRadius.circular(25.0),
+                        ),
+                        child: new FormBuilderTextField(
+                          name: "labelAbsenIn",
+                          controller: controller.txtCtrlLabelAbsenIn,
+                          decoration: GayaField.abu("Tanggal Masuk"),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
+                          keyboardType: TextInputType.text,
+                          style: new TextStyle(
+                            fontFamily: "Poppins",
                           ),
                         ),
                       ),
+                    ),
                     Visibility(
-                      visible:controller.currentAbsensi!=null,
-                                          child: Padding(
+                      visible: controller.currentAbsensi != null,
+                      child: Padding(
                         padding: const EdgeInsets.only(top: 25.0),
                         child: Container(
                           decoration: BoxDecoration(
@@ -145,7 +136,7 @@ class form_absensi_viewView extends ViewState<
                           child: new FormBuilderTextField(
                             name: "labelAbsenOut",
                             controller: controller.txtCtrlLabelAbsenOut,
-                            decoration: GayaField.abu("Nama Lengkap"),
+                            decoration: GayaField.abu("Tanggal Keluar"),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context),
                             ]),
@@ -172,7 +163,10 @@ class form_absensi_viewView extends ViewState<
                               padding: const EdgeInsets.all(15.0),
                               child: Center(
                                 child: Text(
-                                  "Absen",
+                                  "Konfirm Absen " +
+                                      (controller.currentAbsensi == null
+                                          ? "Masuk"
+                                          : "Keluar"),
                                   style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.white,

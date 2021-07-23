@@ -2,7 +2,7 @@
     package="com.cekrecek.keluarmasuk.keluarmasuk">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
    <application
-        android:label="keluarmasuk"
+        android:label="Keluar Masuk"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
