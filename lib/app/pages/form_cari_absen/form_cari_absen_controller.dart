@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:get/get.dart';
 import 'package:intro_slider/slide_object.dart';
-import 'package:keluarmasuk/UI/BottomNavigationBar.dart';
+
 import 'package:keluarmasuk/app/pages/list_absensi/list_absensi_view.dart';
 import 'package:keluarmasuk/app/utils/constants.dart';
 import 'package:keluarmasuk/domain/entities/FilterAbsensi.dart';
