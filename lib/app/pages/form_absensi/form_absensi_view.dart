@@ -91,10 +91,14 @@ class form_absensi_viewView extends ViewState<
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(padding: EdgeInsets.only(top: 20)),
+                    CircleProgress(
+                        screen_width: 300,
+                        max_progress: 2,
+                        current_progress: 1),
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0, bottom: 10),
                       child: Text(
-                        "${controller.labelTanggal}",
+                        "Form Absensi",
                         style: TextStyle(
                           fontSize: 14.0,
                           fontFamily: "Popins",
@@ -103,14 +107,55 @@ class form_absensi_viewView extends ViewState<
                         ),
                       ),
                     ),
-                    CircleProgress(
-                        screen_width: 300,
-                        max_progress: 2,
-                        current_progress: 1),
                     Divider(
                       color: Colors.black12,
                       height: 2.0,
                       thickness: 1,
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.only(top: 25.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Warna.warnaAbu,
+                            borderRadius: new BorderRadius.circular(25.0),
+                          ),
+                          child: new FormBuilderTextField(
+                            name: "labelAbsenIn",
+                            controller: controller.txtCtrlLabelAbsenIn,
+                            decoration: GayaField.abu("Nama Lengkap"),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context),
+                            ]),
+                            keyboardType: TextInputType.text,
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                            ),
+                          ),
+                        ),
+                      ),
+                    Visibility(
+                      visible:controller.currentAbsensi!=null,
+                                          child: Padding(
+                        padding: const EdgeInsets.only(top: 25.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Warna.warnaAbu,
+                            borderRadius: new BorderRadius.circular(25.0),
+                          ),
+                          child: new FormBuilderTextField(
+                            name: "labelAbsenOut",
+                            controller: controller.txtCtrlLabelAbsenOut,
+                            decoration: GayaField.abu("Nama Lengkap"),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context),
+                            ]),
+                            keyboardType: TextInputType.text,
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                     Center(
                       child: Padding(

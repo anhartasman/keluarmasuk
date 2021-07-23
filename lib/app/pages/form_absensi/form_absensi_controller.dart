@@ -21,7 +21,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 //auto_darttecture_import_usecase_GetCurrentAbsensiUserUseCase
 import 'package:keluarmasuk/domain/repositories/UserRepository.dart';
 
-
 class form_absensi_controller extends Controller {
   form_absensi_presenter _form_absensi_presenter;
   //auto_darttecture_class_var_declaration
@@ -47,10 +46,9 @@ class form_absensi_controller extends Controller {
   form_absensi_controller(
     AbsensiUserRepository _AbsensiUserRepository,
     UserRepository _UserRepository,
-    
-  ) : _form_absensi_presenter = form_absensi_presenter(_AbsensiUserRepository,
+  ) : _form_absensi_presenter = form_absensi_presenter(
+          _AbsensiUserRepository,
           _UserRepository,
-          
         ) {
     //getAuthStatus();
     //countProductInCart();
@@ -58,16 +56,27 @@ class form_absensi_controller extends Controller {
   }
 
   AbsensiUser? currentAbsensi;
+  var txtCtrlLabelAbsenIn = new TextEditingController();
+
+  var txtCtrlLabelAbsenOut = new TextEditingController();
 
   @override
   void onInitState() {
-
     final planDate = DateTime.now();
-    labelTanggal = DateFormat("yyyy-MM-dd").format(planDate);
-    callGetCurrentAbsensiUserUseCase(onNext:(theAbsensi){
-      currentAbsensi=theAbsensi;
-    },onError:(e)=>stopLoading(),onComplete: stopLoading);
-   
+    labelTanggal =
+        DateFormat("EEEE, dd MMMM yyyy HH:mm", "id_ID").format(planDate);
+    txtCtrlLabelAbsenIn.text =
+        DateFormat("EEEE, dd MMMM yyyy HH:mm", "id_ID").format(planDate);
+    callGetCurrentAbsensiUserUseCase(
+        onNext: (theAbsensi) {
+          currentAbsensi = theAbsensi;
+          txtCtrlLabelAbsenIn.text =
+              DateFormat("EEEE, dd MMMM yyyy HH:mm", "id_ID").format(
+                  DateTime.fromMillisecondsSinceEpoch(currentAbsensi!.absenIn));
+          txtCtrlLabelAbsenOut.text = labelTanggal;
+        },
+        onError: (e) => stopLoading(),
+        onComplete: stopLoading);
   }
 
   bool onLoading = true;
@@ -82,10 +91,8 @@ class form_absensi_controller extends Controller {
   }
 
   final formKey = GlobalKey<FormBuilderState>();
-  void prosesAbsen(){
-    
-  }
-  String labelTanggal="";
+  void prosesAbsen() {}
+  String labelTanggal = "";
   @override
   void initListeners() {
     //use_case_initListener
@@ -99,7 +106,7 @@ class form_absensi_controller extends Controller {
     _form_absensi_presenter.ListenUseCaseInsertAbsensiUserUseCaseOnComplete =
         this.ListenUseCaseInsertAbsensiUserUseCaseOnComplete;
 //stopPresenterListenerOnUseCaseInsertAbsensiUserUseCase
-  
+
 //startPresenterListenerOnUseCaseGetCurrentAbsensiUserUseCase
     _form_absensi_presenter.ListenUseCaseGetCurrentAbsensiUserUseCaseOnNext =
         (AbsensiUser the_value) {
@@ -107,23 +114,24 @@ class form_absensi_controller extends Controller {
     };
     _form_absensi_presenter.ListenUseCaseGetCurrentAbsensiUserUseCaseOnError =
         this.ListenUseCaseGetCurrentAbsensiUserUseCaseOnError;
-    _form_absensi_presenter.ListenUseCaseGetCurrentAbsensiUserUseCaseOnComplete =
+    _form_absensi_presenter
+            .ListenUseCaseGetCurrentAbsensiUserUseCaseOnComplete =
         this.ListenUseCaseGetCurrentAbsensiUserUseCaseOnComplete;
 //stopPresenterListenerOnUseCaseGetCurrentAbsensiUserUseCase
- }
+  }
 
   BuildContext? dialogContext;
   void handlePermissions() {}
   void dispose() => _form_absensi_presenter.dispose();
- 
+
 //auto_darttecture_class_body
 //startControllerCallUseCaseInsertAbsensiUserUseCase
   static defaultFuncONNextInsertAbsensiUserUseCase(Respon theValue) {}
   static defaultFuncONErrorInsertAbsensiUserUseCase(String errorMessage) {}
   static defaultFuncONCompleteInsertAbsensiUserUseCase() {}
   void callInsertAbsensiUserUseCase(
-      {required IsiFormAbsensi isiForm,Function(Respon) onNext =
-          defaultFuncONNextInsertAbsensiUserUseCase,
+      {required IsiFormAbsensi isiForm,
+      Function(Respon) onNext = defaultFuncONNextInsertAbsensiUserUseCase,
       Function(String errorMessageByUseCaseInsertAbsensiUserUseCase) onError =
           defaultFuncONErrorInsertAbsensiUserUseCase,
       Function onComplete =
@@ -189,6 +197,7 @@ class form_absensi_controller extends Controller {
     print("dapat oncomplete dari InsertAbsensiUserUseCase");
     //refreshUI();
   }
+
 //stopListenerOnUseCaseInsertAbsensiUserUseCase
 //startControllerCallUseCaseGetCurrentAbsensiUserUseCase
   static defaultFuncONNextGetCurrentAbsensiUserUseCase(AbsensiUser theValue) {}
@@ -197,8 +206,8 @@ class form_absensi_controller extends Controller {
   void callGetCurrentAbsensiUserUseCase(
       {Function(AbsensiUser) onNext =
           defaultFuncONNextGetCurrentAbsensiUserUseCase,
-      Function(String errorMessageByUseCaseGetCurrentAbsensiUserUseCase) onError =
-          defaultFuncONErrorGetCurrentAbsensiUserUseCase,
+      Function(String errorMessageByUseCaseGetCurrentAbsensiUserUseCase)
+          onError = defaultFuncONErrorGetCurrentAbsensiUserUseCase,
       Function onComplete =
           defaultFuncONCompleteGetCurrentAbsensiUserUseCase}) async {
     tambahan_callGetCurrentAbsensiUserUseCaseOnNext = onNext;

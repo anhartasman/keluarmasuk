@@ -3,8 +3,6 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
-
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:keluarmasuk/app/utils/Warna.dart';
+import 'package:keluarmasuk/data/repositories/DataUserRepository.dart';
 import 'splash_controller.dart';
 import 'package:after_layout/after_layout.dart';
 //import 'package:openpgp/openpgp.dart';
@@ -20,7 +19,8 @@ import 'package:permission_handler/permission_handler.dart';
 class splash_view extends View {
   splash_view();
   @override
-  splash_viewView createState() => splash_viewView(splash_controller());
+  splash_viewView createState() =>
+      splash_viewView(splash_controller(DataUserRepository()));
 }
 
 class splash_viewView extends ViewState<splash_view, splash_controller>
