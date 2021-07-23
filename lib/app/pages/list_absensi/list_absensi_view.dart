@@ -58,7 +58,7 @@ class list_absensi_viewView
         key: globalKey,
         appBar: AppBar(
           brightness: Brightness.dark,
-          title: const Text('Daftar Klien'),
+          title: const Text('Daftar Absensi'),
           leading: IconButton(
             icon: const FaIcon(FontAwesomeIcons.chevronLeft),
             tooltip: 'Back',

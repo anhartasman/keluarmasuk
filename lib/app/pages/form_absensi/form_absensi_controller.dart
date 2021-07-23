@@ -1,4 +1,5 @@
 import 'package:flutter/animation.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,6 +46,10 @@ class form_absensi_controller extends Controller {
   }
   @override
   void onInitState() {
+
+    final planDate = DateTime.now();
+    labelTanggal = DateFormat("yyyy-MM-dd").format(planDate);
+
     Future.delayed(Duration(seconds: 1), () {
       stopLoading();
     });
@@ -65,6 +70,7 @@ class form_absensi_controller extends Controller {
   void prosesAbsen(){
     
   }
+  String labelTanggal="";
   @override
   void initListeners() {
     //use_case_initListener

@@ -74,22 +74,6 @@ class home_user_viewView extends ViewState<home_user_view, home_user_controller>
                                 color: Colors.black,
                               ),
                             ),
-                            Text(
-                              "Selamat pagi, Budi!",
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                fontFamily: "Popins",
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              "Ayo rajin keluar masuk",
-                              style: TextStyle(
-                                fontSize: 12.0,
-                                fontFamily: "Popins",
-                                color: Colors.black,
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -138,7 +122,7 @@ class home_user_viewView extends ViewState<home_user_view, home_user_controller>
                                     child: _menuHome(
                                       title: "Data Absensi",
                                       subTitle: "Lihat daftar keluar masuk",
-                                      menuIcon: FontAwesomeIcons.store,
+                                      menuIcon: FontAwesomeIcons.book,
                                     ),
                                   ),
                                 ),
@@ -147,6 +131,36 @@ class home_user_viewView extends ViewState<home_user_view, home_user_controller>
                           ),
                         ],
                       ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 50.0,left:20,right:20,),
+                                child: InkWell(
+                                  onTap: controller.prosesLogout,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Warna.warnaUtama,
+                                      borderRadius:
+                                          new BorderRadius.circular(25.0),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(15.0),
+                                          child: Text(
+                                            "Logout",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                              fontFamily: "Poppins",
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                     ],
                   ),
                 );

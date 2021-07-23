@@ -60,7 +60,7 @@ class form_absensi_viewView extends ViewState<
         key: globalKey,
         appBar: AppBar(
           brightness: Brightness.dark,
-          title: const Text('Registrasi'),
+          title: const Text('Absensi'),
           bottomOpacity: 0.0,
           elevation: 0.0,
           leading: IconButton(
@@ -91,14 +91,10 @@ class form_absensi_viewView extends ViewState<
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(padding: EdgeInsets.only(top: 20)),
-                    CircleProgress(
-                        screen_width: 300,
-                        max_progress: 4,
-                        current_progress: 1),
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0, bottom: 10),
                       child: Text(
-                        "Form Absensi",
+                        "${controller.labelTanggal}",
                         style: TextStyle(
                           fontSize: 14.0,
                           fontFamily: "Popins",
@@ -107,6 +103,10 @@ class form_absensi_viewView extends ViewState<
                         ),
                       ),
                     ),
+                    CircleProgress(
+                        screen_width: 300,
+                        max_progress: 2,
+                        current_progress: 1),
                     Divider(
                       color: Colors.black12,
                       height: 2.0,

@@ -26,7 +26,7 @@ class home_user_controller extends Controller {
     });
   }
 
-  void loginUser() {
+  void prosesLogout() {
     Get.to(bottomNavigationBar());
 
     // Get.to(form_registrasi_4_konfirmasi_view(IsiFormAbsensi()));
