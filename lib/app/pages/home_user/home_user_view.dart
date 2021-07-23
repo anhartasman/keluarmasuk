@@ -350,12 +350,27 @@ class _rowAbsensi extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                "${theAbsensiDisplay.labelAbsenIn}",
-                style: TextStyle(
-                  fontSize: 12.0,
-                  fontFamily: "Popins",
-                  color: Colors.grey,
+              Padding(
+                padding: const EdgeInsets.only(top: 5.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: Center(
+                        child: FaIcon(FontAwesomeIcons.calendar,
+                            size: 20, color: Warna.warnaBiru),
+                      ),
+                    ),
+                    Text(
+                      "${theAbsensiDisplay.labelAbsenIn}",
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        fontFamily: "Popins",
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Padding(
