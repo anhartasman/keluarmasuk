@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
-
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -16,9 +15,11 @@ import 'package:get/get.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
 import 'package:keluarmasuk/app/pages/form_absensi/form_absensi_view.dart';
+import 'package:keluarmasuk/app/pages/form_cari_absen/form_cari_absen_view.dart';
 import 'package:keluarmasuk/app/pages/list_absensi/list_absensi_view.dart';
 import 'package:keluarmasuk/app/utils/Warna.dart';
 import 'package:keluarmasuk/app/widgets/RPSCustomPainter.dart';
+import 'package:keluarmasuk/data/repositories/DataUserRepository.dart';
 import 'home_user_controller.dart';
 import 'package:after_layout/after_layout.dart';
 //import 'package:openpgp/openpgp.dart';
@@ -26,7 +27,8 @@ import 'package:after_layout/after_layout.dart';
 class home_user_view extends View {
   home_user_view();
   @override
-  home_user_viewView createState() => home_user_viewView(home_user_controller());
+  home_user_viewView createState() =>
+      home_user_viewView(home_user_controller(DataUserRepository()));
 }
 
 class home_user_viewView extends ViewState<home_user_view, home_user_controller>
@@ -105,8 +107,8 @@ class home_user_viewView extends ViewState<home_user_view, home_user_controller>
                               children: [
                                 InkWell(
                                   onTap: () {
-                                      Get.to(form_absensi_view());
-                                    },
+                                    Get.to(form_cari_absen_view());
+                                  },
                                   child: _menuHome(
                                     title: "Absensi",
                                     subTitle: "pendataan keluar masuk",
@@ -131,36 +133,38 @@ class home_user_viewView extends ViewState<home_user_view, home_user_controller>
                           ),
                         ],
                       ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 50.0,left:20,right:20,),
-                                child: InkWell(
-                                  onTap: controller.prosesLogout,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Warna.warnaUtama,
-                                      borderRadius:
-                                          new BorderRadius.circular(25.0),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(15.0),
-                                          child: Text(
-                                            "Logout",
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                              fontFamily: "Poppins",
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 50.0,
+                          left: 20,
+                          right: 20,
+                        ),
+                        child: InkWell(
+                          onTap: controller.prosesLogout,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Warna.warnaUtama,
+                              borderRadius: new BorderRadius.circular(25.0),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Text(
+                                    "Logout",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      fontFamily: "Poppins",
                                     ),
                                   ),
                                 ),
-                              ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 );

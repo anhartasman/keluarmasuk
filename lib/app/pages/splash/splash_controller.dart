@@ -77,9 +77,9 @@ class splash_controller extends Controller {
 
   void goToMain() {
     callGetCurrentUserUseCase(
-        onComplete: () => Get.to(home_user_view()),
+        onComplete: () => Get.offAll(home_user_view()),
         onError: (e) {
-          Get.to(akun_login_view());
+          Get.offAll(akun_login_view());
         });
   }
 

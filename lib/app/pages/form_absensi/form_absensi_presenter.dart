@@ -69,7 +69,7 @@ class form_absensi_presenter extends Presenter {
 
 //auto_darttecture_class_outside
 //startPresenterObserverUseCaseToggleAbsensiUserUseCase
-class _ToggleAbsensiUserUseCaseObserver implements Observer<AbsensiUser> {
+class _ToggleAbsensiUserUseCaseObserver implements Observer<Respon> {
   // The above presenter
   form_absensi_presenter _form_absensi_presenter;
   _ToggleAbsensiUserUseCaseObserver(this._form_absensi_presenter);
@@ -105,7 +105,7 @@ class _ToggleAbsensiUserUseCaseObserver implements Observer<AbsensiUser> {
 
 //endPresenterObserverUseCaseToggleAbsensiUserUseCase
 //startPresenterObserverUseCaseGetCurrentAbsensiUserUseCase
-class _GetCurrentAbsensiUserUseCaseObserver implements Observer<Respon> {
+class _GetCurrentAbsensiUserUseCaseObserver implements Observer<AbsensiUser> {
   // The above presenter
   form_absensi_presenter _form_absensi_presenter;
   _GetCurrentAbsensiUserUseCaseObserver(this._form_absensi_presenter);

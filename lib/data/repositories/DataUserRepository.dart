@@ -2,9 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-
 import 'package:keluarmasuk/domain/entities/Respon.dart';
-
 
 import 'package:flutter/foundation.dart';
 import 'package:keluarmasuk/domain/entities/ResponGlobal.dart';
@@ -19,9 +17,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:logging/logging.dart';
 // Import the firebase_core plugin
 
-
-
-
 import '../DbHelper.dart';
 
 /// `DataProductCategoryRepository` is the implementation of `ProductCategoryRepository` present
@@ -34,22 +29,39 @@ class DataUserRepository implements UserRepository {
     _logger = Logger('DataUserRepository');
   }
 
+  Future<Respon> logout() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var respon = new Respon();
+    try {
+      if (preferences.containsKey("currentAccount")) {
+        preferences.remove("currentAccount");
+      }
+    } catch (error) {
+      print("rereea");
+
+      respon.success = true;
+      respon.error_msg = error.toString();
+      _logger.warning(error.toString());
+    }
+
+    return respon;
+  }
+
   Future<ResponGlobal<UserAplikasi>> getUserAccount(
       ViewUserSetting viewSetting) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var respon = new ResponGlobal<UserAplikasi>(
         success: true, the_respon: UserAplikasi());
     try {
-      if(preferences.containsKey("currentAccount")){
-        final theString=preferences.getString("currentAccount")!;
-        respon.the_respon=UserAplikasi.fromJson(theString);
-      }else{
-        throw("Account not found");
+      if (preferences.containsKey("currentAccount")) {
+        final theString = preferences.getString("currentAccount")!;
+        respon.the_respon = UserAplikasi.fromJson(theString);
+      } else {
+        throw ("Account not found");
       }
-      
     } catch (error) {
       print("rereea");
-      //TODO:Perbaiki success
+
       respon.success = true;
       respon.error_msg = error.toString();
       _logger.warning(error.toString());
@@ -65,15 +77,15 @@ class DataUserRepository implements UserRepository {
 
     // return user;
   }
- 
+
   Future<ResponGlobal<UserAplikasi>> loginUserAccount(
-      String email,String password) async {
+      String email, String password) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-   final DbHelper _helper = new DbHelper();
+    final DbHelper _helper = new DbHelper();
     var respon = new ResponGlobal<UserAplikasi>(
         success: true, the_respon: UserAplikasi());
     try {
-      respon=await _helper.login(email,password);
+      respon = await _helper.login(email, password);
     } catch (error) {
       print("rereea");
       respon.success = false;
@@ -83,15 +95,15 @@ class DataUserRepository implements UserRepository {
 
     return respon;
   }
- 
+
   Future<ResponGlobal<UserAplikasi>> registerUserAccount(
-      String name,String email,String password) async {
+      String name, String email, String password) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-   final DbHelper _helper = new DbHelper();
+    final DbHelper _helper = new DbHelper();
     var respon = new ResponGlobal<UserAplikasi>(
         success: true, the_respon: UserAplikasi());
     try {
-      respon=await _helper.register(name,email,password);
+      respon = await _helper.register(name, email, password);
     } catch (error) {
       print("rereea");
       respon.success = false;
@@ -100,5 +112,5 @@ class DataUserRepository implements UserRepository {
     }
 
     return respon;
-  } 
+  }
 }

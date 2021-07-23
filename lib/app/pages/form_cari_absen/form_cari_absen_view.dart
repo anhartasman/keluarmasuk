@@ -16,26 +16,24 @@ import 'package:flutter/services.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:get/get.dart';
 import 'package:keluarmasuk/app/utils/Warna.dart';
-import 'form_absensi_controller.dart';
+import 'form_cari_absen_controller.dart';
 import 'package:after_layout/after_layout.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:keluarmasuk/data/repositories/DataAbsensiUserRepository.dart';
 import 'package:keluarmasuk/data/repositories/DataUserRepository.dart';
 
-class form_absensi_view extends View {
-  form_absensi_view();
+class form_cari_absen_view extends View {
+  form_cari_absen_view();
   @override
-  form_absensi_viewView createState() =>
-      form_absensi_viewView(form_absensi_controller(
-        new DataAbsensiUserRepository(),
-        new DataUserRepository(),
-      ));
+  form_cari_absen_viewView createState() =>
+      form_cari_absen_viewView(form_cari_absen_controller());
 }
 
-class form_absensi_viewView
-    extends ViewState<form_absensi_view, form_absensi_controller>
-    with TickerProviderStateMixin, AfterLayoutMixin<form_absensi_view> {
-  form_absensi_viewView(form_absensi_controller controller) : super(controller);
+class form_cari_absen_viewView
+    extends ViewState<form_cari_absen_view, form_cari_absen_controller>
+    with TickerProviderStateMixin, AfterLayoutMixin<form_cari_absen_view> {
+  form_cari_absen_viewView(form_cari_absen_controller controller)
+      : super(controller);
   @override
   void initState() {
     super.initState();
@@ -63,7 +61,7 @@ class form_absensi_viewView
             },
           ),
         ),
-        body: ControlledWidgetBuilder<form_absensi_controller>(
+        body: ControlledWidgetBuilder<form_cari_absen_controller>(
             builder: (context, controller) {
           if (controller.onLoading) {
             return SpinKitWave(
@@ -81,16 +79,10 @@ class form_absensi_viewView
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(padding: EdgeInsets.only(top: 20)),
-                    CircleProgress(
-                        screen_width: 300,
-                        max_progress: 2,
-                        current_progress:
-                            controller.currentAbsensi == null ? 1 : 2),
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0, bottom: 10),
                       child: Text(
-                        "Form Absensi",
+                        "Cari Absensi",
                         style: TextStyle(
                           fontSize: 14.0,
                           fontFamily: "Popins",
@@ -112,9 +104,10 @@ class form_absensi_viewView
                           borderRadius: new BorderRadius.circular(25.0),
                         ),
                         child: new FormBuilderTextField(
-                          name: "labelAbsenIn",
-                          controller: controller.txtCtrlLabelAbsenIn,
-                          decoration: GayaField.abu("Tanggal Masuk"),
+                          onTap: controller.cariDateFrom,
+                          name: "labelDateFrom",
+                          controller: controller.txtLabelDateFrom,
+                          decoration: GayaField.abu("Dari Tanggal"),
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),
                           ]),
@@ -125,26 +118,24 @@ class form_absensi_viewView
                         ),
                       ),
                     ),
-                    Visibility(
-                      visible: controller.currentAbsensi != null,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Warna.warnaAbu,
-                            borderRadius: new BorderRadius.circular(25.0),
-                          ),
-                          child: new FormBuilderTextField(
-                            name: "labelAbsenOut",
-                            controller: controller.txtCtrlLabelAbsenOut,
-                            decoration: GayaField.abu("Tanggal Keluar"),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
-                            ]),
-                            keyboardType: TextInputType.text,
-                            style: new TextStyle(
-                              fontFamily: "Poppins",
-                            ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 25.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Warna.warnaAbu,
+                          borderRadius: new BorderRadius.circular(25.0),
+                        ),
+                        child: new FormBuilderTextField(
+                          onTap: controller.cariDateTo,
+                          name: "labelDateTo",
+                          controller: controller.txtLabelDateTo,
+                          decoration: GayaField.abu("Hingga Tanggal"),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
+                          keyboardType: TextInputType.text,
+                          style: new TextStyle(
+                            fontFamily: "Poppins",
                           ),
                         ),
                       ),
@@ -153,7 +144,7 @@ class form_absensi_viewView
                       child: Padding(
                         padding: const EdgeInsets.only(top: 50.0),
                         child: InkWell(
-                          onTap: controller.prosesAbsen,
+                          onTap: controller.cariAbsensi,
                           child: Container(
                             decoration: BoxDecoration(
                               color: Warna.warnaUtama,
@@ -163,10 +154,7 @@ class form_absensi_viewView
                               padding: const EdgeInsets.all(15.0),
                               child: Center(
                                 child: Text(
-                                  "Konfirm Absen " +
-                                      (controller.currentAbsensi == null
-                                          ? "Masuk"
-                                          : "Keluar"),
+                                  "Konfirm Absen",
                                   style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.white,

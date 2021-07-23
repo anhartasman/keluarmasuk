@@ -20,7 +20,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 //auto_darttecture_import_usecase_UserLoginUseCase
 import 'package:keluarmasuk/domain/repositories/UserRepository.dart';
 
-
 class akun_login_controller extends Controller {
   akun_login_presenter _akun_login_presenter;
   //auto_darttecture_class_var_declaration
@@ -35,31 +34,32 @@ class akun_login_controller extends Controller {
 //endControllerUseCaseVarDeclarationForUserLoginUseCase
   akun_login_controller(
     UserRepository _UserRepository,
-    
-  ) : _akun_login_presenter = akun_login_presenter(_UserRepository,
-          
+  ) : _akun_login_presenter = akun_login_presenter(
+          _UserRepository,
         ) {
     //getAuthStatus();
     //countProductInCart();
     initListeners();
   }
-  void loginUser(){
+  void loginUser() {
     if (!formKey.currentState!.saveAndValidate()) {
       TampilanDialog.alertDialog("Maaf", "Lengkapi form terlebih dahulu");
     } else {
-      final email =
-          formKey.currentState!.fields["email"]!.value as String;
+      final email = formKey.currentState!.fields["email"]!.value as String;
       final password =
           formKey.currentState!.fields["password"]!.value as String;
-      callUserLoginUseCase(email: email, password: password,onError: (e){
-
-      TampilanDialog.alertDialog("Gagal Login", "${e}");
-      },onNext: (theRespon){
-        Get.to(home_user_view());
-      });
-      
+      callUserLoginUseCase(
+          email: email,
+          password: password,
+          onError: (e) {
+            TampilanDialog.alertDialog("Gagal Login", "${e}");
+          },
+          onNext: (theRespon) {
+            Get.offAll(home_user_view());
+          });
     }
   }
+
   @override
   void onInitState() {
     Future.delayed(Duration(seconds: 1), () {
@@ -79,7 +79,7 @@ class akun_login_controller extends Controller {
   }
 
   final formKey = GlobalKey<FormBuilderState>();
- 
+
   @override
   void initListeners() {
     //use_case_initListener
@@ -98,19 +98,19 @@ class akun_login_controller extends Controller {
   BuildContext? dialogContext;
   void handlePermissions() {}
   void dispose() => _akun_login_presenter.dispose();
- 
+
 //auto_darttecture_class_body
 //startControllerCallUseCaseUserLoginUseCase
   static defaultFuncONNextUserLoginUseCase(UserAplikasi theValue) {}
   static defaultFuncONErrorUserLoginUseCase(String errorMessage) {}
   static defaultFuncONCompleteUserLoginUseCase() {}
   void callUserLoginUseCase(
-      {required String email,required String password,Function(UserAplikasi) onNext =
-          defaultFuncONNextUserLoginUseCase,
+      {required String email,
+      required String password,
+      Function(UserAplikasi) onNext = defaultFuncONNextUserLoginUseCase,
       Function(String errorMessageByUseCaseUserLoginUseCase) onError =
           defaultFuncONErrorUserLoginUseCase,
-      Function onComplete =
-          defaultFuncONCompleteUserLoginUseCase}) async {
+      Function onComplete = defaultFuncONCompleteUserLoginUseCase}) async {
     tambahan_callUserLoginUseCaseOnNext = onNext;
     tambahan_callUserLoginUseCaseOnError = onError;
     tambahan_callUserLoginUseCaseOnComplete = onComplete;
@@ -120,7 +120,7 @@ class akun_login_controller extends Controller {
     // so the animation can be seen
     print("controller try callUserLoginUseCase");
     Future.delayed(Duration(seconds: 0),
-        () => _akun_login_presenter.callUserLoginUseCase(email,password));
+        () => _akun_login_presenter.callUserLoginUseCase(email, password));
   }
 
 //endControllerCallUseCaseUserLoginUseCase

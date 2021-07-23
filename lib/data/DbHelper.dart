@@ -54,36 +54,42 @@ class DbHelper {
 
   Future<Respon> insertAbsensiUser(IsiFormAbsensi isiForm) async {
     final db = await openDB();
-
-    String whereString = 'sedanngIn = 1 AND userId = ${isiForm.userId}';
-
-    List<Map<String, Object?>> result =
-        await db.query(AbsensiUserQuery.TABLE_NAME, where: whereString);
-    bool dapatIn = false;
-    String absenId = "";
-    if (result.length > 0) {
-      dapatIn = true;
-      absenId = result[0]["id"] as String;
-    }
-    final waktuSekarang = DateTime.now();
-
     var theRespon = new Respon();
+    try {
+      String whereString = 'sedangIn = 1 AND userId = ${isiForm.userId}';
 
-    if (dapatIn) {
-      var oldResult = result[0];
-      oldResult["sedangIn"] = 0;
-      oldResult["absenOut"] = waktuSekarang.millisecondsSinceEpoch;
-      await db.update(AbsensiUserQuery.TABLE_NAME, oldResult,
-          where: whereString);
-    } else {
-      Map<String, Object?> newData = {
-        "userId": isiForm.userId,
-        "absenIn": waktuSekarang.millisecondsSinceEpoch,
-        "absenOut": null,
-        "sedangIn": 1
-      };
-      await db.insert(AbsensiUserQuery.TABLE_NAME, newData,
-          conflictAlgorithm: ConflictAlgorithm.replace);
+      List<Map<String, Object?>> result =
+          await db.query(AbsensiUserQuery.TABLE_NAME, where: whereString);
+      bool dapatIn = false;
+      String absenId = "";
+      if (result.length > 0) {
+        dapatIn = true;
+        absenId = result[0]["id"].toString();
+      }
+      final waktuSekarang = DateTime.now();
+
+      var theRespon = new Respon();
+
+      if (dapatIn) {
+        var oldResult = result[0];
+        oldResult["sedangIn"] = 0;
+        oldResult["absenOut"] = waktuSekarang.millisecondsSinceEpoch;
+        await db.update(AbsensiUserQuery.TABLE_NAME, oldResult,
+            where: whereString);
+      } else {
+        Map<String, Object?> newData = {
+          "userId": isiForm.userId,
+          "absenIn": waktuSekarang.millisecondsSinceEpoch,
+          "absenOut": null,
+          "sedangIn": 1
+        };
+        await db.insert(AbsensiUserQuery.TABLE_NAME, newData,
+            conflictAlgorithm: ConflictAlgorithm.replace);
+      }
+    } catch (error) {
+      theRespon.success = false;
+      theRespon.error_msg = error.toString();
+      theRespon.error_code = "001";
     }
 
     return theRespon;
@@ -92,35 +98,40 @@ class DbHelper {
   Future<Respon> toggleAbsen(UserAplikasi the_user) async {
     final db = await openDB();
 
-    String whereString = 'sedanngIn = 1 AND userId = ${the_user.id}';
-
-    List<Map<String, Object?>> result =
-        await db.query(AbsensiUserQuery.TABLE_NAME, where: whereString);
-    bool dapatIn = false;
-    String absenId = "";
-    if (result.length > 0) {
-      dapatIn = true;
-      absenId = result[0]["id"] as String;
-    }
-    final waktuSekarang = DateTime.now();
-
     var theRespon = new Respon();
+    try {
+      String whereString = 'sedangIn = 1 AND userId = ${the_user.id}';
 
-    if (dapatIn) {
-      var oldResult = result[0];
-      oldResult["sedangIn"] = 0;
-      oldResult["absenOut"] = waktuSekarang.millisecondsSinceEpoch;
-      await db.update(AbsensiUserQuery.TABLE_NAME, oldResult,
-          where: whereString);
-    } else {
-      Map<String, Object?> newData = {
-        "userId": the_user.id,
-        "absenIn": waktuSekarang.millisecondsSinceEpoch,
-        "absenOut": null,
-        "sedangIn": 1
-      };
-      await db.insert(AbsensiUserQuery.TABLE_NAME, newData,
-          conflictAlgorithm: ConflictAlgorithm.replace);
+      List<Map<String, Object?>> result =
+          await db.query(AbsensiUserQuery.TABLE_NAME, where: whereString);
+      bool dapatIn = false;
+      String absenId = "";
+      if (result.length > 0) {
+        dapatIn = true;
+        absenId = result[0]["id"].toString();
+      }
+      final waktuSekarang = DateTime.now();
+
+      if (dapatIn) {
+        var oldResult = result[0];
+        oldResult["sedangIn"] = 0;
+        oldResult["absenOut"] = waktuSekarang.millisecondsSinceEpoch;
+        await db.update(AbsensiUserQuery.TABLE_NAME, oldResult,
+            where: whereString);
+      } else {
+        Map<String, Object?> newData = {
+          "userId": the_user.id,
+          "absenIn": waktuSekarang.millisecondsSinceEpoch,
+          "absenOut": waktuSekarang.millisecondsSinceEpoch,
+          "sedangIn": 1
+        };
+        await db.insert(AbsensiUserQuery.TABLE_NAME, newData,
+            conflictAlgorithm: ConflictAlgorithm.replace);
+      }
+    } catch (error) {
+      theRespon.success = false;
+      theRespon.error_msg = error.toString();
+      theRespon.error_code = "001";
     }
 
     return theRespon;
@@ -191,26 +202,36 @@ class DbHelper {
   Future<ResponGlobal<AbsensiUser>> getCurrentAbsensi(
       UserAplikasi the_user) async {
     final db = await openDB();
+    // db.delete(AbsensiUserQuery.TABLE_NAME);
+    // db.close();
     var theRespon = new ResponGlobal<AbsensiUser>();
     try {
       String whereAbsenString = 'userId = ${the_user.id} AND sedangIn = 1';
       String whereUserString = 'id = ${the_user.id}';
 
+      print("batas a");
       List<Map<String, Object?>> result =
           await db.query(AbsensiUserQuery.TABLE_NAME, where: whereAbsenString);
 
       if (result.length == 0) {
         throw ("Absen not found");
       }
-      theRespon.the_respon = AbsensiUser.fromMap(result[0]);
-
+      var newMap = Map.of(result[0]);
+      print("batas b");
+      newMap["id"] = newMap["id"].toString();
+      print(newMap);
+      print("batas c");
       List<Map<String, Object?>> resultUser =
           await db.query(UserQuery.TABLE_NAME, where: whereUserString);
 
       if (resultUser.length == 0) {
         throw ("User with id ${the_user.id} not found");
       }
-      theRespon.the_respon!.theUser = UserAplikasi.fromMap(resultUser[0]);
+      var newMapUser = Map.of(resultUser[0]);
+      newMapUser["id"] = newMapUser["id"].toString();
+      newMap["theUser"] = newMapUser;
+
+      theRespon.the_respon = AbsensiUser.fromMap(newMap);
     } catch (error) {
       print("Gagal getCurrentAbsensi " + error.toString());
       theRespon.success = false;
@@ -232,13 +253,19 @@ class DbHelper {
 
       if (result.length > 0) {
         for (var theResult in result) {
-          var rowAbsen = AbsensiUser.fromMap(theResult);
+          var newMap = Map.of(theResult);
+          newMap["id"] = newMap["id"].toString();
+
           var resultUser =
               await db.query(UserQuery.TABLE_NAME, where: whereUserString);
 
           if (resultUser.length > 0) {
-            rowAbsen.theUser = UserAplikasi.fromMap(resultUser[0]);
+            var newMapUser = Map.of(resultUser[0]);
+            newMapUser["id"] = newMapUser["id"].toString();
+            newMap["theUser"] = newMapUser;
           }
+          var rowAbsen = AbsensiUser.fromMap(newMap);
+
           theRespon.add(rowAbsen);
         }
       }

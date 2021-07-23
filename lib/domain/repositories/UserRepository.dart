@@ -13,8 +13,8 @@ abstract class UserRepository {
   Future<ResponGlobal<UserAplikasi>> getUserAccount(
       ViewUserSetting viewSetting);
   Future<ResponGlobal<UserAplikasi>> loginUserAccount(
-      String email,String password);
+      String email, String password);
+  Future<Respon> logout();
   Future<ResponGlobal<UserAplikasi>> registerUserAccount(
-      String name,String email,String password);
-      
+      String name, String email, String password);
 }
