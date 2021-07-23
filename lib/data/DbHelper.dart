@@ -253,7 +253,7 @@ class DbHelper {
     List<AbsensiUser> theRespon = [];
     try {
       String whereAbsenString =
-          'userId = ${the_user.id} AND absenIn >= ${theFilter.dateFrom} AND absenIn <= ${theFilter.dateTo}';
+          'sedangIn = 0 AND absenIn >= ${theFilter.dateFrom} AND absenIn <= ${theFilter.dateTo}';
       String whereUserString = 'id = ${the_user.id}';
 
       List<Map<String, Object?>> result =

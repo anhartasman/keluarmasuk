@@ -4,6 +4,7 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'package:keluarmasuk/app/display/InfoAbsensiDisplay.dart';
 import 'package:keluarmasuk/app/utils/constants.dart';
+import 'package:keluarmasuk/app/widgets/RowAbsensi.dart';
 import 'package:keluarmasuk/domain/entities/FilterAbsensi.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:intl/intl.dart';
@@ -262,93 +263,18 @@ class list_absensi_viewView
                     ],
                   ),
                 ),
-                ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: controller.absensi_list.length,
-                    itemBuilder: (buildContext, idx) {
-                      final absensiDisplay =
-                          InfoAbsensiDisplay(controller.absensi_list[idx]);
-
-                      return InkWell(
-                        onTap: () {
-                          // Get.to(detail_klien_view(theInfoKlien.theKlien));
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Icon(Icons.circle,
-                                        color: Colors.red, size: 15),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 15.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "${absensiDisplay.theAbsensi.theUser?.name}",
-                                              style: TextStyle(
-                                                fontSize: 16.0,
-                                                fontFamily: "Popins",
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Text(
-                                                    "${absensiDisplay.labelAbsenIn}",
-                                                    style: TextStyle(
-                                                      fontSize: 14.0,
-                                                      fontFamily: "Popins",
-                                                      color: Colors.grey,
-                                                    ),
-                                                    textAlign: TextAlign.left,
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Text(
-                                                    "${absensiDisplay.labelAbsenOut}",
-                                                    style: TextStyle(
-                                                      fontSize: 14.0,
-                                                      fontFamily: "Popins",
-                                                      color: Colors.grey,
-                                                    ),
-                                                    textAlign: TextAlign.right,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15.0),
-                                child: Divider(
-                                  color: Colors.black12,
-                                  height: 2.0,
-                                  thickness: 1,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: controller.absensi_list.length,
+                      itemBuilder: (buildContext, idx) {
+                        final absensiDisplay =
+                            InfoAbsensiDisplay(controller.absensi_list[idx]);
+                        return RowAbsensi(theAbsensiDisplay: absensiDisplay);
+                      }),
+                ),
               ],
             ),
           );

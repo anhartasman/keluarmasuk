@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intro_slider/slide_object.dart';
 import 'package:keluarmasuk/app/pages/akun_login/akun_login_view.dart';
+import 'package:keluarmasuk/app/pages/form_absensi/form_absensi_view.dart';
 import 'package:keluarmasuk/app/pages/home_user/home_user_view.dart';
 import 'package:keluarmasuk/app/pages/utils/TampilanDialog.dart';
 import 'package:keluarmasuk/domain/entities/AbsensiUser.dart';
@@ -74,33 +75,43 @@ class home_user_controller extends Controller {
 
   @override
   void onInitState() {
+    callGetCurrentUserUseCase(
+      onNext: (user) {
+        theUser = user;
+        ambilData();
+      },
+    );
+  }
+
+  void bukaForm() {
+    Get.to(form_absensi_view())?.then((value) => ambilData());
+  }
+
+  void ambilData() {
+    absen_day_list.clear();
+    absen_month_list.clear();
     var dateMonthFrom = DateTime.now().subtract(Duration(days: 30));
     var dateMonthTo = DateTime.now();
     var dateDayFrom = DateTime.now().subtract(Duration(days: 1));
     var dateDayTo = DateTime.now();
-    callGetCurrentUserUseCase(
-      onNext: (user) {
-        theUser = user;
-        //mengambil absen bulan ini
+    //mengambil absen bulan ini
+    callGetAbsensiUserListUseCase(
+      theFilter: FilterAbsensi(
+          dateFrom: dateMonthFrom.millisecondsSinceEpoch,
+          dateTo: dateMonthTo.millisecondsSinceEpoch),
+      onNext: (theAbsensi) {
+        absen_month_list.add(theAbsensi);
+      },
+      onComplete: () {
+        //mengambil absen hari ini
         callGetAbsensiUserListUseCase(
           theFilter: FilterAbsensi(
-              dateFrom: dateMonthFrom.millisecondsSinceEpoch,
-              dateTo: dateMonthTo.millisecondsSinceEpoch),
-          onNext: (theAbsensi) {
-            absen_month_list.add(theAbsensi);
-          },
-          onComplete: (){
-            //mengambil absen hari ini
-            callGetAbsensiUserListUseCase(
-          theFilter: FilterAbsensi(
-             dateFrom: dateDayFrom.millisecondsSinceEpoch,
+              dateFrom: dateDayFrom.millisecondsSinceEpoch,
               dateTo: dateDayTo.millisecondsSinceEpoch),
           onNext: (theAbsensi) {
             absen_day_list.add(theAbsensi);
           },
           onComplete: stopLoading,
-        );
-          },
         );
       },
     );
