@@ -39,7 +39,7 @@ class DataUserRepository implements UserRepository {
     } catch (error) {
       print("rereea");
 
-      respon.success = true;
+      respon.success = false;
       respon.error_msg = error.toString();
       _logger.warning(error.toString());
     }
@@ -62,7 +62,7 @@ class DataUserRepository implements UserRepository {
     } catch (error) {
       print("rereea");
 
-      respon.success = true;
+      respon.success = false;
       respon.error_msg = error.toString();
       _logger.warning(error.toString());
     }
